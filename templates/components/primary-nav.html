@@ -6,9 +6,10 @@
 
             <!--====== Main Logo ======-->
 
-            <a class="main-logo" href="index-2.html">
+            <a class="main-logo" href="{% url 'core:index' %}">
 
-                <img src="/static/images/logo/logo-2.png" alt=""></a>
+                <img src="/static/images/logo/logo-2.png" alt="Fashion Cart">
+            </a>
             <!--====== End - Main Logo ======-->
 
 
@@ -43,26 +44,40 @@
 
                             <span class="js-menu-toggle"></span>
                             <ul style="width:120px">
+                                
+                                {% if request.user.is_authenticated %}
                                 <li>
 
                                     <a href="dashboard.html"><i class="fas fa-user-circle u-s-m-r-6"></i>
 
-                                        <span>Account</span></a></li>
+                                        <span>Account</span>
+                                    </a>
+                                </li>
                                 <li>
 
-                                    <a href="signup.html"><i class="fas fa-user-plus u-s-m-r-6"></i>
+                                    <a href="{% url 'accounts:logout' %}"><i class="fas fa-lock-open u-s-m-r-6"></i>
 
-                                        <span>Signup</span></a></li>
+                                        <span>Logout</span>
+                                    </a>
+                                </li>
+                                {% else %}
                                 <li>
 
-                                    <a href="signin.html"><i class="fas fa-lock u-s-m-r-6"></i>
+                                    <a href="{% url 'accounts:signup' %}"><i class="fas fa-user-plus u-s-m-r-6"></i>
 
-                                        <span>Signin</span></a></li>
+                                        <span>Signup</span>
+                                    </a>
+                                </li>
                                 <li>
 
-                                    <a href="signup.html"><i class="fas fa-lock-open u-s-m-r-6"></i>
+                                    <a href="{% url 'accounts:login' %}"><i class="fas fa-lock u-s-m-r-6"></i>
 
-                                        <span>Signout</span></a></li>
+                                        <span>Login</span>
+                                    </a>
+                                </li>
+                                {% endif %}
+                                    
+                                
                             </ul>
                             <!--====== End - Dropdown ======-->
                         </li>
