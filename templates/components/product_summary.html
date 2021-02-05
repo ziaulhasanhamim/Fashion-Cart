@@ -1,0 +1,57 @@
+{% for product in products %}
+<div class="u-s-m-b-30">
+    <div class="product-o product-o--hover-on">
+        <div class="product-o__wrap">
+
+            <a class="aspect aspect--bg-grey aspect--square u-d-block" href="product-detail.html">
+
+                <img class="aspect__img" src="{{ product.thumbnail.url }}" alt=""></a>
+            <div class="product-o__action-wrap">
+                <ul class="product-o__action-list">
+                    <li>
+
+                        <a href="" title="Quick View"><i class="fas fa-search-plus"></i></a>
+                    </li>
+                    <li>
+                        <a title="Add to Cart" onclick="add_cart(`{{ product.id }}`)">
+                            <i class="fas fa-plus-circle"></i>
+                        </a>
+                    </li>
+                    <li>
+
+                        <a href="signin.html" data-tooltip="tooltip" data-placement="top" title="Add to Wishlist"><i
+                                class="fas fa-heart"></i></a>
+                    </li>
+                    <li>
+
+                        <a href="signin.html" data-tooltip="tooltip" data-placement="top"
+                            title="Email me When the price drops"><i class="fas fa-envelope"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <span class="product-o__category">
+
+            <a href="shop-side-version-2.html">Men Clothing</a></span>
+
+        <span class="product-o__name">
+
+            <a href="product-detail.html">{{ product.title }}</a></span>
+        <div class="product-o__rating gl-rating-style"><i class="far fa-star"></i><i class="far fa-star"></i><i
+                class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+            <span class="product-o__review">(0)</span>
+        </div>
+
+        {% if product.discount_price != None %}
+        <span class="product-o__price">${{ product.discount_price }}
+            <span class="product-o__discount">${{ product.price }}</span>
+        </span>
+        {% else %}
+        <span class="product-o__price">${{ product.price }}</span>
+        {% endif %}
+
+    </div>
+</div>
+{% endfor %}
