@@ -54,90 +54,58 @@
 
                 <!--====== White Container ======-->
                 <div class="white-container">
+                    
+                    {% if sliders.count > 0 %}
                     <div class="container">
 
                         <!--====== Primary Slider ======-->
                         <div class="s-skeleton s-skeleton--h-600 s-skeleton--bg-black">
                             <div class="owl-carousel primary-style-2" id="hero-slider">
-                                <div class="hero-slide hero-slide--4">
+                                
+                                {% for slider in sliders %}
+                                <div class="hero-slide hero-slide--4" style="background-image: url('{{ slider.image.url }}');">
                                     <div class="primary-style-2-container">
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="slider-content slider-content--animation">
+                                                    
+                                                    {% if slider.secondary_tagline %}
+                                                    <span class="content-span-1 u-c-white">{{ slider.secondary_tagline }}</span>
+                                                    {% endif %}
+                                                        
 
-                                                    <span class="content-span-1 u-c-white">Find Top Brands</span>
-
-                                                    <span class="content-span-2 u-c-white">10% Off On Intimates</span>
-
-                                                    <span class="content-span-3 u-c-white">Find Intimates on best
-                                                        prices</span>
-
+                                                    <span class="content-span-2 u-c-white">{{ slider.primary_tagline }}</span>
+                                                    
+                                                    {% if slider.important_text %}
+                                                    <span class="content-span-3 u-c-white">{{ slider.important_text }}</span>
+                                                    {% endif %}
+                                                        
+                                                    
+                                                    {% if slider.starting_price %}
                                                     <span class="content-span-4 u-c-white">Starting At
 
-                                                        <span class="u-c-brand">$100.00</span></span>
-
+                                                        <span class="u-c-brand">${{ slider.starting_price }}</span>
+                                                    </span>
+                                                    {% endif %}
+                                                    
+                                                    {% if slider.is_link %}
                                                     <a class="shop-now-link btn--e-brand"
-                                                        href="shop-side-version-2.html">SHOP NOW</a>
+                                                    href="{{ slider.link }}">{{ slider.link_text }}</a>
+                                                    {% else %}
+                                                    <a class="shop-now-link btn--e-brand"
+                                                    href="/products">Shop Now</a>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="hero-slide hero-slide--5">
-                                    <div class="primary-style-2-container">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="slider-content slider-content--animation">
-
-                                                    <span class="content-span-1 u-c-white">Find Top Brands</span>
-
-                                                    <span class="content-span-2 u-c-white">10% Off On Electronics</span>
-
-                                                    <span class="content-span-3 u-c-white">Find electronics on best
-                                                        prices</span>
-
-                                                    <span class="content-span-4 u-c-white">Starting At
-
-                                                        <span class="u-c-brand">$1000.00</span></span>
-
-                                                    <a class="shop-now-link btn--e-brand"
-                                                        href="shop-side-version-2.html">SHOP NOW</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="hero-slide hero-slide--6">
-                                    <div class="primary-style-2-container">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="slider-content slider-content--animation">
-
-                                                    <span class="content-span-1 u-c-white">Find Top Brands</span>
-
-                                                    <span class="content-span-2 u-c-white">10% Off On Outwear</span>
-
-                                                    <span class="content-span-3 u-c-white">Find outwear on best
-                                                        prices</span>
-
-                                                    <span class="content-span-4 u-c-white">Starting At
-
-                                                        <span class="u-c-brand">$100.00</span></span>
-
-                                                    <a class="shop-now-link btn--e-brand"
-                                                        href="shop-side-version-2.html">SHOP NOW</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% endfor %}
                             </div>
                         </div>
                         <!--====== End - Primary Slider ======-->
                     </div>
-
-
-
+                    {% endif %}
                     
                     
                     {% comment %}
@@ -1934,8 +1902,10 @@
 
 
                     <!--====== Women Category ======-->
+                    {% if sliders.count > 0 %}
                     <br>
                     <br>
+                    {% endif %}
                     <br>
                     <br>
                     <div class="u-s-p-b-60" id="female-02">
