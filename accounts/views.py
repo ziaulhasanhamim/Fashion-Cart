@@ -4,8 +4,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login as login_user, logout as logout_user
 from django.http import HttpRequest, HttpResponse
 import string
+from decorators.authorization import only_anonymous
 
 
+@only_anonymous
 def signup(request: HttpRequest) -> HttpResponse:
     context: Dict[str, str] = dict()
     if request.method == "POST":
@@ -41,6 +43,7 @@ def signup(request: HttpRequest) -> HttpResponse:
     return render(request, "accounts/signup.html", context)
 
 
+@only_anonymous
 def login(request: HttpRequest) -> HttpResponse:
     context: Dict[str, str] = dict()
 
@@ -55,6 +58,8 @@ def login(request: HttpRequest) -> HttpResponse:
             context["pass_error"] = "Password Doesn't Match"
         else:
             login_user(request, user.first())
+            if request.GET.get("returnurl", None) != None:
+                return redirect(request.GET.get("returnurl"))
             return redirect("core:index")
 
     return render(request, "accounts/login.html", context)

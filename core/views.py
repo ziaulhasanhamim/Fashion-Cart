@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse, JsonResponse
+from decorators.authorization import only_authorized
 from .models import Product, Category, Slider
 
 
@@ -16,6 +17,7 @@ def index(request: HttpRequest) -> HttpResponse :
     return render(request, "core/index.html", context)
 
 
+@only_authorized
 def cart(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         print(request.body)
