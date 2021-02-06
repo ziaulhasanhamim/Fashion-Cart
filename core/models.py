@@ -39,6 +39,11 @@ class Product(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    def get_price(self) -> float:
+        if self.discount_price:
+            return self.discount_price
+        return self.price
+
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
@@ -50,11 +55,32 @@ class Order(models.Model):
     date_ordered: datetime = models.DateTimeField(null=True, blank=True)
     date_delivered: datetime = models.DateTimeField(null=True, blank=True)
 
+    @property
+    def items_count(self):
+        count = 0
+        for item in self.order_items.all():
+            assert isinstance(item, OrderItem)
+            count += item.quantity
+        return count
+
+    @property
+    def total_price(self) -> float:
+        total = 0;
+        for item in self.order_items.all().select_related("product"):
+            total += item.get_net_price()
+        return total
+
+    def get_items(self):
+        return self.order_items.all().select_related("product")
+
 
 class OrderItem(models.Model):
-    order: Order = models.ForeignKey(Order, on_delete=models.CASCADE, name="order_items");
+    order: Order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="order_items", null=True);
     product: Product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="order_items")
     quantity: int = models.IntegerField(default=1)
+
+    def get_net_price(self) -> float:
+        return self.product.get_price() * self.quantity
 
 
 class Slider(models.Model):

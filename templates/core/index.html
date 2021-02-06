@@ -4987,8 +4987,15 @@
         <!--====== End - Modal Section ======-->
     </div>
     <!--====== End - Main App ======-->
-
-
+    <div style="display: none;">
+        <form action="/cart" method="POST" id="add_cart">
+            {% csrf_token %}
+            <input type="number" name="id" id="productId">
+            <input type="number" name="quantity" id="quantity">
+            <input type="text" name="returnurl" id="returnUrl">
+        </form>
+    </div>
+    {{ request.user.is_authenticated|json_script:"is_authenticated" }}
     <!--====== Google Analytics: change UA-XXXXX-Y to be your site's ID ======-->
     <script>
         window.ga = function () {
@@ -5003,7 +5010,7 @@
    
     <!--====== Vendor Js ======-->
     <script src="/static/js/vendor.js"></script>
-    <script src="/static/js/index_page.js"></script>
+    <script src="/static/js/cart.js"></script>
     <!--====== jQuery Shopnav plugin ======-->
     <script src="/static/js/jquery.shopnav.js"></script>
 
