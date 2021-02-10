@@ -10,7 +10,7 @@
                 <ul class="product-o__action-list">
                     <li>
 
-                        <a href="" title="Quick View"><i class="fas fa-search-plus"></i></a>
+                        <a href="{{ product.get_absolute_url }}" title="Quick View"><i class="fas fa-search-plus"></i></a>
                     </li>
                     <li>
                         <a title="Add to Cart" onclick="add_cart(`{{ product.id }}`, '1')">
@@ -37,7 +37,7 @@
 
         <span class="product-o__name">
 
-            <a href="product-detail.html">{{ product.title }}</a></span>
+            <a href="{{ product.get_absolute_url }}">{{ product.title }}</a></span>
         <div class="product-o__rating gl-rating-style"><i class="far fa-star"></i><i class="far fa-star"></i><i
                 class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
 

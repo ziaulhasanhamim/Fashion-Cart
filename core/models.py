@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
+from django.shortcuts import reverse
 from datetime import datetime
 
 category_gender_choices = [
@@ -35,6 +37,15 @@ class Product(models.Model):
     categories = models.ManyToManyField(Category, related_name="products", blank=True)
     for_gender = models.CharField(max_length=10, choices=gender_choices, default="men")
     sold = models.IntegerField(default=0)
+    url = models.SlugField(unique=True, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if self.url == None:
+            slug = slugify(self.title)
+            while Product.objects.filter(url=slug).exists():
+                slug += f"-{self.id}"
+            self.url = slug
+        return super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.title
@@ -44,10 +55,21 @@ class Product(models.Model):
             return self.discount_price
         return self.price
 
+    def get_absolute_url(self):
+        return reverse("core:product-detail", kwargs={"slug": self.url})
+
+    def get_discount_percent(self):
+        if self.discount_price != None:
+            return int((self.price - self.discount_price) / self.price * 100)
+        return 0
+
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(upload_to="product_images/")
+
+    def url(self) -> str:
+        return self.imageimage.url
 
 
 class Order(models.Model):

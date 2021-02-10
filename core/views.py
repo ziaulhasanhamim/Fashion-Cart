@@ -87,3 +87,14 @@ def cart_items(request: HttpRequest) -> HttpResponse:
             if items.exists():
                 items.first().delete()
         return JsonResponse("Ok", safe=False)
+
+
+def product_detail(request: HttpRequest, slug: str) -> HttpResponse :
+    product_query = Product.objects.filter(url=slug)
+    if product_query.exists():
+        return render(request, "core/product-detail.html", {"product": product_query.first()})
+    return render(request, "404.html", {"msg": "Product Not Found"}, status=404)
+
+
+def handler404(request: HttpRequest, exception) -> HttpResponse :
+    return render(request, "404.html", {"msg": "Page Not Found"}, status=404)
