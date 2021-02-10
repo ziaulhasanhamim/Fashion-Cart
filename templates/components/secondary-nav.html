@@ -959,7 +959,7 @@
                                 </li>
                                 <li>
 
-                                    <a href="cart.html">Cart</a></li>
+                                    <a href="{% url 'core:cart' %}?returnurl={{ request.path }}">Cart</a></li>
                                 <li>
 
                                     <a href="wishlist.html">Wishlist</a></li>
@@ -1049,7 +1049,7 @@
                             </li>
                             <li class="has-dropdown">
 
-                                <a class="mini-cart-shop-link" href="{% url 'core:cart' %}"><i class="fas fa-shopping-bag"></i>
+                                <a class="mini-cart-shop-link" href="{% url 'core:cart' %}?returnurl={{ request.path }}"><i class="fas fa-shopping-bag"></i>
 
                                     <span class="total-item-round">{{ request.cart.items_count }}</span></a>
 
