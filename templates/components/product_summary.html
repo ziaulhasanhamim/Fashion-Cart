@@ -32,8 +32,18 @@
         </div>
 
         <span class="product-o__category">
-
-            <a href="shop-side-version-2.html">Men Clothing</a></span>
+            
+            {% for category in product.categories.all %}
+            
+            {% if forloop.counter0 != 0 %}
+            <a href="shop-side-version-2.html" style="margin-left: 10px;">{{ category }}</a>
+            {% else %}
+            <a href="shop-side-version-2.html">{{ category }}</a>
+            {% endif %}
+                
+            {% endfor %}
+                
+        </span>
 
         <span class="product-o__name">
 

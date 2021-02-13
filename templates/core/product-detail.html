@@ -154,16 +154,29 @@
                                             <a data-click-scroll="#view-review">23 Reviews</a></span>
                                     </div>
                                 </div>
+                                
+                                {% comment %}
                                 <div class="u-s-m-b-15">
-                                    {% comment %}
                                     <div class="pd-detail__inline">
+                                        
+                                        {% for category in product.categories.all %}                                            
+                                        <a href="" class="pd-detail__left">{{ category }}</a>
+                                        {% endfor %}    
+                                        <!-- <span class="pd-detail__stock">{{ category }}</span> -->
 
-                                        <span class="pd-detail__stock">200 in stock</span>
-
-                                        <span class="pd-detail__left">Only 2 left</span>
                                     </div>
-                                    {% endcomment %}
                                 </div>
+                                {% endcomment %}
+                                <div class="u-s-m-b-15">
+                                    <div class="pd-detail__inline">
+                                        
+                                        {% for category in product.categories.all %}                                            
+                                        <a href="" class="manage-o__badge badge--delivered">{{ category }}</a>
+                                        {% endfor %}    
+                                        <!-- <span class="pd-detail__stock">{{ category }}</span> -->
+
+                                    </div>
+                                </div> 
 
                                 <div class="u-s-m-b-15">
 
