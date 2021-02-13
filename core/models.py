@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.shortcuts import reverse
 from datetime import datetime
+from ckeditor_uploader.fields import RichTextUploadingField
 
 category_gender_choices = [
     ("men", "Men"),
@@ -29,7 +30,8 @@ gender_choices = [
 
 class Product(models.Model):
     title = models.CharField(max_length=500)
-    description = models.TextField()
+    summary = models.TextField(max_length=1000)
+    description = RichTextUploadingField(null=True, blank=True)
     thumbnail = models.ImageField(upload_to="product_thumbnails/")
     price = models.DecimalField(max_digits=12, decimal_places=2)
     discount_price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
@@ -69,7 +71,7 @@ class ProductImage(models.Model):
     image = models.ImageField(upload_to="product_images/")
 
     def url(self) -> str:
-        return self.imageimage.url
+        return self.image.url
 
 
 class Order(models.Model):

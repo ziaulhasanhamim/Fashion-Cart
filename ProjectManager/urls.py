@@ -7,6 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include("accounts.urls", namespace="accounts")),
     path('', include("core.urls", namespace="core")),
+    path('ckeditor/', include("ckeditor_uploader.urls"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'core.views.handler404'
