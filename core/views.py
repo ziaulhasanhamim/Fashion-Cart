@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, Http404, redirect
 from typing import Dict
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from decorators.authorization import only_authorized
 import json
-from .models import Product, Category, Slider, Order, OrderItem
+from .models import Product, Category, Slider, Order, OrderItem, Review
 
 
 def index(request: HttpRequest) -> HttpResponse :
@@ -91,10 +91,38 @@ def cart_items(request: HttpRequest) -> HttpResponse:
 
 def product_detail(request: HttpRequest, slug: str) -> HttpResponse :
     product_query = Product.objects.filter(url=slug)
+    context: Dict[str, object] = dict()
     if product_query.exists():
-        return render(request, "core/product-detail.html", {"product": product_query.first()})
+        product = product_query.first()
+        context["product"] = product
+        review_query = Review.objects.filter(product=product, user=request.user)
+        context["user_given_review"] = review_query.exists()
+        context["user_review"] = review_query.first() if context["user_given_review"] else None
+        context["reviews"] = request.user.reviews.order_by("-timestamp")
+        return render(request, "core/product-detail.html", context)
     return render(request, "404.html", {"msg": "Product Not Found"}, status=404)
 
 
 def handler404(request: HttpRequest, exception) -> HttpResponse :
     return render(request, "404.html", {"msg": "Page Not Found"}, status=404)
+
+
+@only_authorized
+def update_reviews(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        product_id = int(request.POST.get("productId", "0"))
+        product_query = Product.objects.filter(id=product_id)
+        if product_query.exists():
+            rating = float(request.POST.get("rating", "5.0"))
+            msg = request.POST.get("message", "")
+            review_query = Review.objects.filter(product_id=product_id, user=request.user)
+            if review_query.exists:
+                review = review_query.first()
+                review.rating = rating
+                review.message = msg
+                review.save()
+            else:
+                Review.objects.create(rating=rating, message=msg, product_id=product_id, user=request.user)
+            return redirect(request.POST.get("returnurl", "/"))
+        raise Http404()
+    return redirect("/")

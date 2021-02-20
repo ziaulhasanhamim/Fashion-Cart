@@ -35,7 +35,7 @@ class Product(models.Model):
     thumbnail = models.ImageField(upload_to="product_thumbnails/")
     price = models.DecimalField(max_digits=12, decimal_places=2)
     discount_price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    timestamp = models.DateTimeField(auto_now_add=True);
+    timestamp = models.DateTimeField(auto_now_add=True)
     categories = models.ManyToManyField(Category, related_name="products", blank=True)
     for_gender = models.CharField(max_length=10, choices=gender_choices, default="men")
     sold = models.IntegerField(default=0)
@@ -125,3 +125,33 @@ class Slider(models.Model):
         if self.link != None and self.link_text != None:
             return True
         return False
+
+
+RATINGS_CHOICES = (
+    (1, '1'),
+    (1.5, '1.5'),
+    (2.5, '2.5'),
+    (3, '3'),
+    (3.5, '3.5'),
+    (4, '4'),
+    (4.5, '4.5'),
+    (5, '5')
+)
+
+
+class Review(models.Model):
+    rating = models.FloatField(choices=RATINGS_CHOICES)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reviews")
+    message = models.TextField()
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews")
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def get_stars(self) -> str:
+        stars = ""
+        for i in range(0, int(self.rating)):
+            stars += """<i class="fas fa-star"></i>"""
+        if (self.rating - int(self.rating)) != 0:
+            stars += """<i class="fas fa-star-half-alt"></i>"""
+        for i in range(0, 5-(int(self.rating) + 1)):
+            stars += """<i class="far fa-star"></i>"""
+        return stars
