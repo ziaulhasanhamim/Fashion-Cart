@@ -64,6 +64,7 @@ var app = new Vue({
             }
         },
         async remove(e, index) {
+            let productId = this.items[index].id;
             this.$delete(this.items, index);
             const res = await fetch("/cart_items", {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -72,7 +73,7 @@ var app = new Vue({
                     'X-CSRFToken': csrftoken
                 },
                 body: JSON.stringify({
-                    id: this.items[index].id,
+                    id: productId,
                     op: "remove"
                 })
             });

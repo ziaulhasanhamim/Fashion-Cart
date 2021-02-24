@@ -230,19 +230,21 @@
                                     </ul>
                                 </div>
                                 <div class="u-s-m-b-15">
-                                    <form class="pd-detail__form">
+                                    <form class="pd-detail__form" method="POST" action="{% url 'core:cart' %}">
                                         <div class="pd-detail-inline-2">
                                             <div class="u-s-m-b-15">
-
-                                                <!--====== Input Counter ======-->
+                                                {% csrf_token %}
+                                                <input type="hidden" name="id" value="{{ product.id }}">
+                                                <input type="hidden" name="returnurl" value="{{ request.path }}">
+                                                <input type="hidden" id="real_quantity"  name="quantity" value="1">
                                                 <div class="input-counter">
 
-                                                    <span class="input-counter__minus fas fa-minus"></span>
+                                                    <span class="input-counter__minus fas fa-minus" onclick="quantity_counter('rem')"></span>
 
                                                     <input class="input-counter__text input-counter--text-primary-style"
-                                                        type="text" value="1" data-min="1" data-max="1000">
+                                                        type="text" value="1" id="product_quantity" data-min="1" data-max="1000" >
 
-                                                    <span class="input-counter__plus fas fa-plus"></span>
+                                                    <span class="input-counter__plus fas fa-plus" onclick="quantity_counter('add')"></span>                                                    
                                                 </div>
                                                 <!--====== End - Input Counter ======-->
                                             </div>
@@ -1728,10 +1730,11 @@
                                         </ul>
                                     </div>
                                     <div class="u-s-m-b-15">
-                                        <form class="pd-detail__form">
+                                        <form class="pd-detail__form" method="POST" action="{% url 'core:cart_items' %}">
                                             <div class="pd-detail-inline-2">
                                                 <div class="u-s-m-b-15">
-
+                                                    <input type="hidden" name="id" value="{{ product.id }}">
+                                                    <input type="hidden" name="returnurl" value="{{ request.path }}">
                                                     <!--====== Input Counter ======-->
                                                     <div class="input-counter">
 
@@ -1739,7 +1742,7 @@
 
                                                         <input
                                                             class="input-counter__text input-counter--text-primary-style"
-                                                            type="text" value="1" data-min="1" data-max="1000">
+                                                            type="text" name="quantity" value="1" data-min="1" data-max="1000">
 
                                                         <span class="input-counter__plus fas fa-plus"></span>
                                                     </div>
@@ -1853,13 +1856,27 @@
 
     <!--====== Vendor Js ======-->
     <script src="/static/js/vendor.js"></script>
-
+    <script>
+        var product_quantity = parseInt(document.getElementById("product_quantity").value);
+        var real_quantity = document.getElementById("real_quantity")
+        function quantity_counter(op) {
+            if (op == 'add') {
+                if (product_quantity < 1000) {
+                    product_quantity += 1;                                                                    
+                }
+            } else {
+                if (product_quantity > 1) {
+                    product_quantity -= 1;
+                } 
+            }
+            real_quantity.value = product_quantity;
+        }
+    </script>
     <!--====== jQuery Shopnav plugin ======-->
     <script src="/static/js/jquery.shopnav.js"></script>
 
     <!--====== App ======-->
     <script src="/static/js/app.js"></script>
-    <script src="/static/js/cart.js"></script>
     <!--====== Noscript ======-->
     <noscript>
         <div class="app-setting">

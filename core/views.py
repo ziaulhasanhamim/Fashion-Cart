@@ -24,13 +24,13 @@ def cart(request: HttpRequest) -> HttpResponse:
     context: Dict[str, str] = dict()
     if request.method == "POST":
         try:
-            productId = int(request.POST["id"])
-            quantity = int(request.POST["quantity"])
+            productId = int(request.POST.get("id", 0))
+            quantity = int(request.POST.get("quantity", 0))
             context["return_url"] = request.POST.get("returnurl", "/")
             if quantity == 0 or abs(quantity) > 1000:
                 raise Exception("")
         except Exception as e:
-            return HttpResponse("error occured. bad request.")
+            return HttpResponse(f"error occured. bad request.")
         products = Product.objects.filter(id=productId)
 
         if products.exists():
@@ -44,7 +44,7 @@ def cart(request: HttpRequest) -> HttpResponse:
                 else:
                     item.save()
             elif quantity > 0:
-                request.cart.order_items.create(product=product, quantity=1)
+                request.cart.order_items.create(product=product, quantity=quantity)
         else:
             return HttpResponse("error occured. bad request.")
     elif request.method == "GET":
@@ -95,9 +95,12 @@ def product_detail(request: HttpRequest, slug: str) -> HttpResponse :
     if product_query.exists():
         product = product_query.first()
         context["product"] = product
-        review_query = Review.objects.filter(product=product, user=request.user)
-        context["user_given_review"] = review_query.exists()
-        context["user_review"] = review_query.first() if context["user_given_review"] else None
+        context["user_given_review"] = False
+        context["user_review"] = None
+        if request.user.is_authenticated:
+            review_query = Review.objects.filter(product=product, user=request.user)
+            context["user_given_review"] = review_query.exists()
+            context["user_review"] = review_query.first() if context["user_given_review"] else None
         context["reviews"] = request.user.reviews.order_by("-timestamp")
         return render(request, "core/product-detail.html", context)
     return render(request, "404.html", {"msg": "Product Not Found"}, status=404)
