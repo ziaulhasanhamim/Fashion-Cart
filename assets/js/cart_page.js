@@ -23,7 +23,7 @@ var app = new Vue({
         items : []
     },
     beforeCreate() {
-        fetch("/cart_items")
+        fetch("/api/cart")
         .catch(e => console.log(e))
         .then(r => r.json())
         .then(data => this.items = data)
@@ -32,7 +32,7 @@ var app = new Vue({
         async addQuantity(e, index) {
             if (this.items[index].quantity < 100) {
                 this.items[index].quantity += 1;
-                const res = await fetch("/cart_items", {
+                const res = await fetch("/api/cart", {
                     method: 'POST', // *GET, POST, PUT, DELETE, etc.
                     headers: {
                         'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ var app = new Vue({
         async removeQuantity(e, index) {
             if (this.items[index].quantity > 1) {
                 this.items[index].quantity -= 1;
-                const res = await fetch("/cart_items", {
+                const res = await fetch("/api/cart", {
                     method: 'POST', // *GET, POST, PUT, DELETE, etc.
                     headers: {
                         'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ var app = new Vue({
         async remove(e, index) {
             let productId = this.items[index].id;
             this.$delete(this.items, index);
-            const res = await fetch("/cart_items", {
+            const res = await fetch("/api/cart", {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 headers: {
                     'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ var app = new Vue({
         },
         async removeAll(e) {
             this.items = []
-            const res = await fetch("/cart_items", {
+            const res = await fetch("/api/cart", {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 headers: {
                     'Content-Type': 'application/json',

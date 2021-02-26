@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'core',
     'accounts',
     'ckeditor',
-    'ckeditor_uploader'
+    'ckeditor_uploader',
+    'api'
 ]
 
 CKEDITOR_UPLOAD_PATH = "product_detail_images/"

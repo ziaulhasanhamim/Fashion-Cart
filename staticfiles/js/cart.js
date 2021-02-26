@@ -15,27 +15,10 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken')
 const is_authenticated = JSON.parse(document.getElementById('is_authenticated').textContent);
-// async function add_cart2(id) {
-//     if (is_authenticated) {
-//         const res = await fetch("/cart", {
-//             method: 'POST', // *GET, POST, PUT, DELETE, etc.
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'X-CSRFToken': csrftoken
-//             },
-//             body: JSON.stringify({
-//                 productId: parseInt(id)
-//             })
-//         });
-//         window.location = "/cart?returnurl=" + window.location.pathname
-//     } else {
-//         window.location = "/account/login?returnurl=" + window.location.pathname
-//     }
-// }
-let form = document.getElementById("add_cart")
-let idNode = document.getElementById("productId")
-let urlNode = document.getElementById("returnUrl")
-let quantityNode = document.getElementById("quantity")
+let form = document.getElementById("add_cart");
+let idNode = document.getElementById("productId");
+let urlNode = document.getElementById("returnUrl");
+let quantityNode = document.getElementById("quantity");
 function add_cart(id, quantity) {
     idNode.value = parseInt(id)
     urlNode.value = window.location.pathname
