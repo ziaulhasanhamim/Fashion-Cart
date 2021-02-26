@@ -48,10 +48,10 @@
         <span class="product-o__name">
 
             <a href="{{ product.get_absolute_url }}">{{ product.title }}</a></span>
-        <div class="product-o__rating gl-rating-style"><i class="far fa-star"></i><i class="far fa-star"></i><i
-                class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+        <div class="product-o__rating gl-rating-style">
+            {{ product.get_avg_stars|safe }}
 
-            <span class="product-o__review">(0)</span>
+            <span class="product-o__review">({{ product.reviews.count }})</span>
         </div>
 
         {% if product.discount_price != None %}

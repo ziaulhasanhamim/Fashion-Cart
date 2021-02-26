@@ -1,4 +1,5 @@
 from django.shortcuts import render, Http404, redirect
+from django.db.models import Avg
 from typing import Dict
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from decorators.authorization import only_authorized
@@ -101,7 +102,6 @@ def product_detail(request: HttpRequest, slug: str) -> HttpResponse :
             review_query = Review.objects.filter(product=product, user=request.user)
             context["user_given_review"] = review_query.exists()
             context["user_review"] = review_query.first() if context["user_given_review"] else None
-        context["reviews"] = request.user.reviews.order_by("-timestamp")
         return render(request, "core/product-detail.html", context)
     return render(request, "404.html", {"msg": "Product Not Found"}, status=404)
 
@@ -119,7 +119,7 @@ def update_reviews(request: HttpRequest) -> HttpResponse:
             rating = float(request.POST.get("rating", "5.0"))
             msg = request.POST.get("message", "")
             review_query = Review.objects.filter(product_id=product_id, user=request.user)
-            if review_query.exists:
+            if review_query.exists():
                 review = review_query.first()
                 review.rating = rating
                 review.message = msg

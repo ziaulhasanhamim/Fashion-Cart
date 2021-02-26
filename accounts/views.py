@@ -22,7 +22,7 @@ def signup(request: HttpRequest) -> HttpResponse:
         elif uname != None:
             is_uname_valid = True
             for char in uname:
-                if char not in "-_":
+                if char not in "-_" or not char.isalnum():
                     is_uname_valid = False
                     break;
         

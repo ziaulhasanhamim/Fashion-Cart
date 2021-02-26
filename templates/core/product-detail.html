@@ -304,7 +304,7 @@
                                             <a class="nav-link" id="view-review" data-toggle="tab"
                                                 href="#pd-rev">REVIEWS
 
-                                                <span>(23)</span></a>
+                                                <span>({{ product.reviews.count }})</span></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -352,12 +352,19 @@
                                             <div class="u-s-m-b-30">
                                                 <div class="pd-tab__rev-score">
                                                     <div class="u-s-m-b-8">
-                                                        <h2>23 Reviews - 4.6 (Overall)</h2>
+                                                        <h2>{{ product.reviews.count }} Reviews - {{ product.avg_rating }} (Overall)</h2>
                                                     </div>
-                                                    <div class="gl-rating-style-2 u-s-m-b-8"><i
-                                                            class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                                            class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                                            class="fas fa-star-half-alt"></i></div>
+                                                    <div class="gl-rating-style-2 u-s-m-b-8">
+                                                        {{ product.get_avg_stars|safe }}
+                                                        {% comment %}                                                         
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star-half-alt"></i>
+                                                        {% endcomment %}
+                                                            
+                                                    </div>
                                                     <div class="u-s-m-b-8">
                                                         <h4>We want to hear from you!</h4>
                                                     </div>
@@ -930,7 +937,7 @@
 
                                                     </div>
 
-                                                    {% for review in reviews %}
+                                                    {% for review in product.reviews.all %}
                                                     <div class="rev-f1__review">
                                                         <div class="review-o u-s-m-b-15">
                                                             <div class="review-o__info u-s-m-b-8">
