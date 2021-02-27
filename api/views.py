@@ -1,5 +1,6 @@
-from django.http import JsonResponse, HttpRequest
+from django.http import JsonResponse, HttpRequest, Http404
 from decorators.authorization import only_authorized
+from core.models import Product
 import json
 
 @only_authorized
@@ -37,3 +38,24 @@ def cart(request: HttpRequest) -> JsonResponse:
             if items.exists():
                 items.first().delete()
         return JsonResponse("Ok", safe=False)
+
+
+def product_list(request: HttpRequest) -> JsonResponse:
+    if request.method == "GET":
+        page = int(request.GET.get("page", 1)) - 1
+        skip = page * 12
+        products_count = Product.objects.count()
+        product_query = Product.objects.all()[skip:skip + 12]
+        products = list(product_query.values())
+        paging_info = {
+            "product_count": products_count,
+            "page_count": int(products_count / 12) + 1,
+            "current_page": page + 1,
+            "product_in_current_page": product_query.count()
+        }
+        context = {
+            "paging_info": paging_info,
+            "products": products
+        }
+        return JsonResponse(context)
+    return Http404()
