@@ -14,6 +14,11 @@
     <link rel="stylesheet" href="/static/css/utility.css">
     <link rel="stylesheet" href="/static/css/app.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <style>
+        .not_first_cat {
+            margin-left: 10px;
+        }
+    </style>
 </head>
 
 <body class="config">
@@ -909,14 +914,16 @@
                                                             <label for="price-min"></label>
 
                                                             <input class="input-text input-text--primary-style"
-                                                                type="text" id="price-min" placeholder="Min" v-model="min_price" @input="min_changed">
+                                                                type="text" id="price-min" placeholder="Min"
+                                                                v-model="min_price" @input="min_changed">
                                                         </div>
                                                         <div>
 
                                                             <label for="price-max"></label>
 
                                                             <input class="input-text input-text--primary-style"
-                                                                type="text" id="price-max" placeholder="Max" v-model="max_price" @input="max_changed">
+                                                                type="text" id="price-max" placeholder="Max"
+                                                                v-model="max_price" @input="max_changed">
                                                         </div>
                                                         <div>
 
@@ -1177,22 +1184,24 @@
                                 <div class="shop-p__toolbar u-s-m-b-30">
                                     <div class="shop-p__meta-wrap u-s-m-b-60">
 
-                                        <span class="shop-p__meta-text-1">FOUND 18 RESULTS FOR <a class="gl-tag btn--e-brand-shadow" href="#">men's clothing</a></span>
+                                        <span class="shop-p__meta-text-1">FOUND 18 RESULTS FOR <a
+                                                class="gl-tag btn--e-brand-shadow" href="#">men's clothing</a></span>
                                     </div>
                                     <div class="shop-p__tool-style">
+                                        {% comment %}
                                         <div class="tool-style__group u-s-m-b-8">
 
                                             <span class="js-shop-grid-target is-active">Grid</span>
 
                                             <span class="js-shop-list-target">List</span>
                                         </div>
+                                        {% endcomment %}
                                         <form>
                                             <div class="tool-style__form-wrap">
-                                                
-                                                {% comment %}                                                    
+
+                                                {% comment %}
                                                 <div class="u-s-m-b-8">
-                                                    <select
-                                                        class="select-box select-box--transparent-b-2">
+                                                    <select class="select-box select-box--transparent-b-2">
                                                         <option>Show: 8</option>
                                                         <option selected>Show: 12</option>
                                                         <option>Show: 16</option>
@@ -1200,7 +1209,7 @@
                                                     </select>
                                                 </div>
                                                 {% endcomment %}
-                                                    
+
                                                 <div class="u-s-m-b-8"><select
                                                         class="select-box select-box--transparent-b-2">
                                                         <option selected>Sort By: Newest Items</option>
@@ -1223,7 +1232,7 @@
                                                     <a class="aspect aspect--bg-grey aspect--square u-d-block"
                                                         :href="'/product/'+product.url">
 
-                                                        <img class="aspect__img" :src="'/media/'+product.thumbnail"
+                                                        <img class="aspect__img" :src="product.image"
                                                             :alt="product.title"></a>
                                                     <div class="product-m__quick-look">
 
@@ -1237,23 +1246,20 @@
                                                             data-modal-id="#add-to-cart">Add to Cart</a>
                                                     </div>
                                                 </div>
+                                                
                                                 <div class="product-m__content">
                                                     <div class="product-m__category">
-
-                                                        <a href="shop-side-version-2.html">Men Clothing</a>
+                                                        <a v-for="(category,index) in product.categories" :class="{'not_first_cat': index != 0 }" href="shop-side-version-2.html">[[ category ]]</a>
                                                     </div>
                                                     <div class="product-m__name">
 
                                                         <a :href="'/product/'+product.url">[[ product.title ]]</a>
                                                     </div>
-                                                    <div class="product-m__rating gl-rating-style"><i
-                                                            class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                                            class="fas fa-star-half-alt"></i><i
-                                                            class="far fa-star"></i><i class="far fa-star"></i>
-
-                                                        <span class="product-m__review">(23)</span>
+                                                    <div class="product-m__rating gl-rating-style" v-html="product.avg_rating_start">
                                                     </div>
-                                                    <div class="product-m__price" v-if="product.discount_price">$[[ product.discount_price ]]<span class="product-m__discount">$[[ product.price ]]</span></div>
+                                                    <div class="product-m__price" v-if="product.discount_price">$[[
+                                                        product.discount_price ]]<span class="product-m__discount">$[[
+                                                            product.price ]]</span></div>
                                                     <div class="product-m__price" v-else>$[[ product.price ]]</div>
                                                     <div class="product-m__hover">
                                                         <div class="product-m__preview-description">
@@ -1268,32 +1274,29 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>                                        
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="u-s-p-y-60">
 
                                     <!--====== Pagination ======-->
                                     <ul class="shop-p__pagination">
-                                        <li class="is-active">
-
-                                            <a href="shop-side-version-2.html">1</a>
+                                        <li>
+                                            <a class="fas fa-angle-left" @click="changeCurrentPage(currentPage-1)" v-if="currentPage > 1"></a>
+                                        </li>
+                                        <li v-for="page in pages"
+                                            v-if="(page > (currentPage-3)) && (page < (currentPage+3))">
+                                            <a @click="changeCurrentPage(page)" v-if="page == currentPage"
+                                                style="background-color: #ff4500; color: white;">
+                                                [[ page ]]
+                                            </a>
+                                            <a @click="changeCurrentPage(page)" href="shop-side-version-2.html" v-else
+                                                style="background-color: #ff984f; color: white;">
+                                                [[ page ]]
+                                            </a>
                                         </li>
                                         <li>
-
-                                            <a href="shop-side-version-2.html">2</a>
-                                        </li>
-                                        <li>
-
-                                            <a href="shop-side-version-2.html">3</a>
-                                        </li>
-                                        <li>
-
-                                            <a href="shop-side-version-2.html">4</a>
-                                        </li>
-                                        <li>
-
-                                            <a class="fas fa-angle-right" href="shop-side-version-2.html"></a>
+                                            <a class="fas fa-angle-right" @click="changeCurrentPage(currentPage+1)" v-if="currentPage < pages[pages.length-1]"></a>
                                         </li>
                                     </ul>
                                     <!--====== End - Pagination ======-->
@@ -1537,23 +1540,28 @@
                                         <div id="js-product-detail-modal">
                                             <div>
 
-                                                <img class="u-img-fluid" src="/static/images/product/product-d-1.jpg" alt="">
+                                                <img class="u-img-fluid" src="/static/images/product/product-d-1.jpg"
+                                                    alt="">
                                             </div>
                                             <div>
 
-                                                <img class="u-img-fluid" src="/static/images/product/product-d-2.jpg" alt="">
+                                                <img class="u-img-fluid" src="/static/images/product/product-d-2.jpg"
+                                                    alt="">
                                             </div>
                                             <div>
 
-                                                <img class="u-img-fluid" src="/static/images/product/product-d-3.jpg" alt="">
+                                                <img class="u-img-fluid" src="/static/images/product/product-d-3.jpg"
+                                                    alt="">
                                             </div>
                                             <div>
 
-                                                <img class="u-img-fluid" src="/static/images/product/product-d-4.jpg" alt="">
+                                                <img class="u-img-fluid" src="/static/images/product/product-d-4.jpg"
+                                                    alt="">
                                             </div>
                                             <div>
 
-                                                <img class="u-img-fluid" src="/static/images/product/product-d-5.jpg" alt="">
+                                                <img class="u-img-fluid" src="/static/images/product/product-d-5.jpg"
+                                                    alt="">
                                             </div>
                                         </div>
                                     </div>
@@ -1561,23 +1569,28 @@
                                         <div id="js-product-detail-modal-thumbnail">
                                             <div>
 
-                                                <img class="u-img-fluid" src="/static/images/product/product-d-1.jpg" alt="">
+                                                <img class="u-img-fluid" src="/static/images/product/product-d-1.jpg"
+                                                    alt="">
                                             </div>
                                             <div>
 
-                                                <img class="u-img-fluid" src="/static/images/product/product-d-2.jpg" alt="">
+                                                <img class="u-img-fluid" src="/static/images/product/product-d-2.jpg"
+                                                    alt="">
                                             </div>
                                             <div>
 
-                                                <img class="u-img-fluid" src="/static/images/product/product-d-3.jpg" alt="">
+                                                <img class="u-img-fluid" src="/static/images/product/product-d-3.jpg"
+                                                    alt="">
                                             </div>
                                             <div>
 
-                                                <img class="u-img-fluid" src="/static/images/product/product-d-4.jpg" alt="">
+                                                <img class="u-img-fluid" src="/static/images/product/product-d-4.jpg"
+                                                    alt="">
                                             </div>
                                             <div>
 
-                                                <img class="u-img-fluid" src="/static/images/product/product-d-5.jpg" alt="">
+                                                <img class="u-img-fluid" src="/static/images/product/product-d-5.jpg"
+                                                    alt="">
                                             </div>
                                         </div>
                                     </div>
@@ -1746,7 +1759,8 @@
                                     </div>
                                     <div class="success__img-wrap">
 
-                                        <img class="u-img-fluid" src="/static/images/product/electronic/product1.jpg" alt="">
+                                        <img class="u-img-fluid" src="/static/images/product/electronic/product1.jpg"
+                                            alt="">
                                     </div>
                                     <div class="success__info-wrap">
 

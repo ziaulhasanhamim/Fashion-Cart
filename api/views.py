@@ -1,6 +1,7 @@
 from django.http import JsonResponse, HttpRequest, Http404
 from decorators.authorization import only_authorized
 from core.models import Product
+import math
 import json
 
 @only_authorized
@@ -42,14 +43,30 @@ def cart(request: HttpRequest) -> JsonResponse:
 
 def product_list(request: HttpRequest) -> JsonResponse:
     if request.method == "GET":
+        per_page = 1
         page = int(request.GET.get("page", 1)) - 1
-        skip = page * 12
+        skip = page * per_page
         products_count = Product.objects.count()
-        product_query = Product.objects.all()[skip:skip + 12]
-        products = list(product_query.values())
+        product_query = Product.objects.all()[skip:skip + per_page]
+        products = [
+            {
+                "title": product.title,
+                "summary": product.summary,
+                "price": product.price,
+                "discount_price": product.discount_price,
+                "image": product.thumbnail.url,
+                "url": product.url,
+                "categories": [
+                    category.name for category in product.categories.all()
+                ],
+                "avg_rating_start": product.get_avg_stars(),
+                "review_count": product.reviews.count()
+            }
+            for product in product_query
+        ]
         paging_info = {
             "product_count": products_count,
-            "page_count": int(products_count / 12) + 1,
+            "page_count": math.ceil(products_count / per_page),
             "current_page": page + 1,
             "product_in_current_page": product_query.count()
         }

@@ -4,16 +4,19 @@ var app = new Vue({
     data: {
         min_price: 0,
         max_price: null,
-        pagingInfo: {},
+        pages: [],
+        currentPage: 1,
         products: []
     },
     mounted() {
         fetch("api/products")
-        .then(res => res.json())
-        .then(data => {
-            this.pagingInfo = data["paging_info"],
-            this.products = data["products"]
-        });
+            .then(res => res.json())
+            .then(data => {
+                this.products = data["products"]
+                for (let i = 1; i <= data["paging_info"]["page_count"]; i++) {
+                    this.pages.push(i);
+                }
+            });
     },
     methods: {
         max_changed() {
@@ -25,6 +28,14 @@ var app = new Vue({
             if (this.min_price < 0) {
                 this.min_price = 0
             }
+        },
+        changeCurrentPage(page) {
+            this.currentPage = page;
+            fetch(`api/products?page=${page}`)
+                .then(res => res.json())
+                .then(data => {
+                    this.products = data["products"];
+                });
         }
     }
 })
