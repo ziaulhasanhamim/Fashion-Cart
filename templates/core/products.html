@@ -31,7 +31,6 @@
 
     <!--====== Main App ======-->
     <div id="app">
-
         <!--====== Main Header ======-->
         <header class="header--style-1 header--box-shadow">
 
@@ -1801,20 +1800,14 @@
 
 
     <!--====== Google Analytics: change UA-XXXXX-Y to be your site's ID ======-->
-    <script>
-        window.ga = function () {
-            ga.q.push(arguments)
-        };
-        ga.q = [];
-        ga.l = +new Date;
-        ga('create', 'UA-XXXXX-Y', 'auto');
-        ga('send', 'pageview')
-    </script>
-    <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+    
 
+    <script>
+        var category = "{{category|escapejs}}" || null;
+        var gender = "{{gender|escapejs}}" || null;
+    </script>
     <!--====== Vendor Js ======-->
     <script src="/static/js/vendor.js"></script>
-
     <!--====== jQuery Shopnav plugin ======-->
     <script src="/static/js/jquery.shopnav.js"></script>
 

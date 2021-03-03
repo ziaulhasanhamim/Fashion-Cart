@@ -44,10 +44,23 @@ def cart(request: HttpRequest) -> JsonResponse:
 def product_list(request: HttpRequest) -> JsonResponse:
     if request.method == "GET":
         per_page = 1
-        page = int(request.GET.get("page", 1)) - 1
+        page = int(request.GET.get("page", "1")) - 1
+        category: str = request.GET.get("category", None)
+        gender: str = request.GET.get("gender", None)
         skip = page * per_page
-        products_count = Product.objects.count()
-        product_query = Product.objects.all()[skip:skip + per_page]
+        product_query = []
+        if category != None and gender != None:
+            product_query = Product.objects.filter(categories__name__iexact=category, for_gender=gender)
+        elif category != None:
+            print("category")
+            product_query = Product.objects.filter(categories__name__iexact=category)
+        elif gender != None:
+            product_query = Product.objects.filter(for_gender=gender)
+        else:
+            product_query = Product.objects.all()
+        
+        product_count = product_query.count()
+        products_needs_to_render = product_query[skip:skip + per_page]
         products = [
             {
                 "title": product.title,
@@ -62,13 +75,13 @@ def product_list(request: HttpRequest) -> JsonResponse:
                 "avg_rating_start": product.get_avg_stars(),
                 "review_count": product.reviews.count()
             }
-            for product in product_query
+            for product in products_needs_to_render
         ]
         paging_info = {
-            "product_count": products_count,
-            "page_count": math.ceil(products_count / per_page),
+            "product_count": product_count,
+            "page_count": math.ceil(product_count / per_page),
             "current_page": page + 1,
-            "product_in_current_page": product_query.count()
+            "product_in_current_page": products_needs_to_render.count()
         }
         context = {
             "paging_info": paging_info,

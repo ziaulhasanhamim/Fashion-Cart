@@ -99,6 +99,20 @@ def products(request: HttpRequest) -> HttpResponse:
     return render(request, "core/products.html", context)
 
 
-def category_products(request: HttpRequest, category: str, gender: str) -> HttpResponse:
+def category_products(request: HttpRequest, category: str) -> HttpResponse:
     context: Dict[str, object] = dict()
+    context["category"] = category
+    return render(request, "core/products.html", context)
+
+
+def gender_products(request: HttpRequest, gender: str) -> HttpResponse:
+    context: Dict[str, object] = dict()
+    context["gender"] = gender
+    return render(request, "core/products.html", context)
+
+
+def category_gender_products(request: HttpRequest, category: str, gender: str) -> HttpResponse:
+    context: Dict[str, object] = dict()
+    context["category"] = category
+    context["gender"] = gender
     return render(request, "core/products.html", context)
