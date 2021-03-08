@@ -6,46 +6,14 @@ var app = new Vue({
         max_price: null,
         pages: [],
         currentPage: 1,
-        products: []
+        products: [],
+        category: cat,
+        gender: gen,
+        rating: 0,
+        allProductCount: 0
     },
     mounted() {
-        if (category) {
-            fetch(`/api/products?category=${category}`)
-                .then(res => res.json())
-                .then(data => {
-                    this.products = data["products"]
-                    for (let i = 1; i <= data["paging_info"]["page_count"]; i++) {
-                        this.pages.push(i);
-                    }
-                });
-        } else if (gender) {
-            fetch(`/api/products?gender=${gender}`)
-                .then(res => res.json())
-                .then(data => {
-                    this.products = data["products"]
-                    for (let i = 1; i <= data["paging_info"]["page_count"]; i++) {
-                        this.pages.push(i);
-                    }
-                });
-        } else if (gender && catagory) {
-            fetch(`/api/products?gender=${gender}&category=${category}`)
-                .then(res => res.json())
-                .then(data => {
-                    this.products = data["products"]
-                    for (let i = 1; i <= data["paging_info"]["page_count"]; i++) {
-                        this.pages.push(i);
-                    }
-                });
-        } else {
-            fetch("/api/products")
-                .then(res => res.json())
-                .then(data => {
-                    this.products = data["products"]
-                    for (let i = 1; i <= data["paging_info"]["page_count"]; i++) {
-                        this.pages.push(i);
-                    }
-                });
-        }
+        this.fetchData()
     },
     methods: {
         max_changed() {
@@ -60,30 +28,81 @@ var app = new Vue({
         },
         changeCurrentPage(page) {
             this.currentPage = page;
-            if (category) {
-                fetch(`/api/products?category=${category}&page=${page}`)
+            if (this.category) {
+                fetch(`/api/products?category=${this.category}&page=${page}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}`)
                     .then(res => res.json())
                     .then(data => {
                         this.products = data["products"]
                     });
-            } else if (gender) {
-                fetch(`/api/products?gender=${gender}&page=${page}`)
+            } else if (this.gender) {
+                fetch(`/api/products?gender=${this.gender}&page=${page}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}`)
                     .then(res => res.json())
                     .then(data => {
                         this.products = data["products"]
                     });
-            } else if (gender && catagory) {
-                fetch(`/api/products?gender=${gender}&category=${category}&page=${page}`)
+            } else if (this.gender && this.catagory) {
+                fetch(`/api/products?gender=${this.gender}&category=${this.category}&page=${page}&max=${this.max_price || 9999999999.99}&min=${this.min_price  || 0}&rating=${this.rating || 0}`)
                     .then(res => res.json())
                     .then(data => {
                         this.products = data["products"]
                     });
             } else {
-                fetch(`/api/products?page=${page}`)
+                fetch(`/api/products?page=${page}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}`)
                     .then(res => res.json())
                     .then(data => {
                         this.products = data["products"];
                     });
+            }
+        },
+        fetchData() {
+            this.pages = []
+            this.products = []
+            this.currentPage = 1
+            if (this.category) {
+                fetch(`/api/products?category=${this.category}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        this.products = data["products"]
+                        for (let i = 1; i <= data["paging_info"]["page_count"]; i++) {
+                            this.pages.push(i);
+                        }
+                        this.allProductCount = data["paging_info"].product_count
+                    });
+            } else if (this.gender) {
+                fetch(`/api/products?gender=${this.gender}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        this.products = data["products"]
+                        for (let i = 1; i <= data["paging_info"]["page_count"]; i++) {
+                            this.pages.push(i);
+                        }
+                        this.allProductCount = data["paging_info"].product_count
+                    });
+            } else if (this.gender && this.catagory) {
+                fetch(`/api/products?gender=${this.gender}&category=${this.category}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        this.products = data["products"]
+                        for (let i = 1; i <= data["paging_info"]["page_count"]; i++) {
+                            this.pages.push(i);
+                        }
+                        this.allProductCount = data["paging_info"].product_count
+                    });
+            } else {
+                fetch(`/api/products?max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        this.products = data["products"]
+                        for (let i = 1; i <= data["paging_info"]["page_count"]; i++) {
+                            this.pages.push(i);
+                        }
+                        this.allProductCount = data["paging_info"].product_count
+                    });
+            }
+        },
+        changeStar() {
+            if(this.rating > 5 || this.rating < 0) {
+                this.rating = 0
             }
         }
     }
