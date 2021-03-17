@@ -32,7 +32,8 @@ class Category(models.Model):
 
 gender_choices = [
     ("men", "Men"),
-    ("women", "Women")
+    ("women", "Women"),
+    ("both", "Both")
 ]
 
 class Product(models.Model):
@@ -97,10 +98,31 @@ class ProductImage(models.Model):
         return self.image.url
 
 
+class OrderStatusChoices(models.IntegerChoices):
+    NOT_ORDERED = 0, "Not Ordered"
+    PENDING = 1, "Pending"
+    PROCESSING = 2, "Processing"
+    DELIVERED = 3, "Delivered"
+    CANCELLED = -1, "Cancelled"
+
+
+class PaymentOptionChoies(models.IntegerChoices):
+    BKASH = 1, "Bkash",
+    CASH_ON_DELIVERY = 2, "Cash On Delivery"
+
+
+class Payment(models.Model):
+    option = models.IntegerField(default=PaymentOptionChoies.CASH_ON_DELIVERY, choices=PaymentOptionChoies.choices)
+    number = models.CharField(max_length=20)
+
+
 class Order(models.Model):
     user: User = models.ForeignKey(User, on_delete=models.CASCADE)
     date_ordered: datetime = models.DateTimeField(null=True, blank=True)
     date_delivered: datetime = models.DateTimeField(null=True, blank=True)
+    cancellion_reason: str = models.CharField(max_length=500, null=True, blank=True)
+    status = models.IntegerField(default=OrderStatusChoices.NOT_ORDERED, choices=OrderStatusChoices.choices)
+    payment = models.OneToOneField(Payment, on_delete=models.SET_NULL, null=True, blank=True)
 
     @property
     def items_count(self):
