@@ -59,6 +59,10 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 
+.toggle-button--white {
+  color: #fff;
+}
+
 html.boxed {
   background-color: #eee;
 }

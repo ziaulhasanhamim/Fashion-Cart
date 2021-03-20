@@ -1,6 +1,6 @@
 var app = new Vue({
     delimiters: ['[[', ']]'],
-    el: '#app',
+    el: '#app-actually',
     data: {
         min_price: 0,
         max_price: null,

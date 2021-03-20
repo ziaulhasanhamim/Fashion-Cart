@@ -5,18 +5,14 @@
         <div class="secondary-nav">
 
             <!--====== Dropdown Main plugin ======-->
+            
+            {% comment %}                
             <div class="menu-init" id="navigation1">
-
                 <button class="btn btn--icon toggle-mega-text toggle-button" type="button">M</button>
-
                 <!--====== Menu ======-->
                 <div class="ah-lg-mode">
-
                     <span class="ah-close">✕ Close</span>
-
-                    <!--====== List ======-->
-                    
-                    {% comment %}
+                    <!--====== List ======-->                    
                     <ul class="ah-list">
                         <li class="has-dropdown">
 
@@ -735,12 +731,12 @@
                             <!--====== End - Mega Menu ======-->
                         </li>
                     </ul>
-                    {% endcomment %}
-                        
                     <!--====== End - List ======-->
                 </div>
                 <!--====== End - Menu ======-->
             </div>
+            {% endcomment %}
+                
             <!--====== End - Dropdown Main plugin ======-->
 
 
@@ -1025,8 +1021,11 @@
             <div class="menu-init" id="navigation3">
 
                 <button class="btn btn--icon toggle-button toggle-button--white fas fa-shopping-bag toggle-button-shop" type="button"></button>
-
-                <span class="total-item-round">2</span>
+                
+                {% if request.user.is_authenticated %}                    
+                <span class="total-item-round">{{ request.cart.items_count }}</span>
+                {% endif %}
+                    
 
                 <!--====== Menu ======-->
                 <div class="ah-lg-mode">

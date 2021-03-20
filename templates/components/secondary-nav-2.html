@@ -1251,15 +1251,15 @@
                             <a href="wishlist.html"><i class="far fa-heart"></i>
                             </a>
                         </li>
+                        {% if request.path != "/cart" %}    
                         <li class="has-dropdown">
                             
-                            {% if request.path != "/cart" %}    
                                 <a class="mini-cart-shop-link" href="{% url 'core:cart' %}?returnurl={{ request.path }}"><i
                                         class="fas fa-shopping-bag"></i>
 
                                     <span class="total-item-round">{{ request.cart.items_count }}</span>
                                 </a>
-                            {% endif %}
+                            
                                 
 
                             <!--====== Dropdown ======-->
@@ -1331,6 +1331,7 @@
                             </div>
                             <!--====== End - Dropdown ======-->
                         </li>
+                        {% endif %}
                         {% endif %}
                     </ul>
                     <!--====== End - List ======-->

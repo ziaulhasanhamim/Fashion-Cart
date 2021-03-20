@@ -17,7 +17,7 @@ const csrftoken = getCookie('csrftoken')
 
 var app = new Vue({
     delimiters: ['[[', ']]'],
-    el: '#app',
+    el: '#app-actually',
     data: {
         message: 'Hello Vue!',
         items : []
