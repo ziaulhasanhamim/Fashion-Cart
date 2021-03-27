@@ -120,3 +120,9 @@ def category_gender_products(request: HttpRequest, category: str, gender: str) -
     context["gender"] = gender
     context["categories"] = Category.objects.all()
     return render(request, "core/products.html", context)
+
+
+@only_authorized
+def checkout(request: HttpRequest) -> HttpResponse:
+    context: Dict[str, object] = dict()
+    return render(request, "core/checkout.html", context)

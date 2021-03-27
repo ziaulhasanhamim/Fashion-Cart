@@ -7,7 +7,7 @@ from datetime import datetime
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.core.exceptions import ValidationError
 from core.models.product import Product
-from core.models.shipping import ShippingAndPayment
+from core.models.shipping import ShippingAndBilling
 
 
 class OrderStatusChoices(models.IntegerChoices):
@@ -24,7 +24,7 @@ class Order(models.Model):
     date_delivered: datetime = models.DateTimeField(null=True, blank=True)
     cancellion_reason: str = models.CharField(max_length=500, null=True, blank=True)
     status = models.IntegerField(default=OrderStatusChoices.NOT_ORDERED, choices=OrderStatusChoices.choices)
-    shipping = models.ForeignKey(ShippingAndPayment, on_delete=models.CASCADE, null=True, blank=True, related_name="orders") 
+    shipping = models.ForeignKey(ShippingAndBilling, on_delete=models.CASCADE, null=True, blank=True, related_name="orders") 
 
     @property
     def items_count(self):
