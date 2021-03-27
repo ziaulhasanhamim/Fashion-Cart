@@ -6,7 +6,7 @@ class CartMiddleware:
 
     def __call__(self, request: HttpRequest):
         if request.user.is_authenticated:
-            order, created = Order.objects.get_or_create(user=request.user, date_ordered__isnull=True)
+            order, created = Order.objects.get_or_create(user=request.user.customer, date_ordered__isnull=True)
             request.cart = order
         response = self.get_response(request)
         return response

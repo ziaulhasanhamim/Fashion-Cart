@@ -8,6 +8,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.core.exceptions import ValidationError
 from core.models.product import Product
 from core.models.shipping import ShippingAndBilling
+from core.models.customer import Customer
 
 
 class OrderStatusChoices(models.IntegerChoices):
@@ -19,7 +20,7 @@ class OrderStatusChoices(models.IntegerChoices):
 
 
 class Order(models.Model):
-    user: User = models.ForeignKey(User, on_delete=models.CASCADE)
+    user: Customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     date_ordered: datetime = models.DateTimeField(null=True, blank=True)
     date_delivered: datetime = models.DateTimeField(null=True, blank=True)
     cancellion_reason: str = models.CharField(max_length=500, null=True, blank=True)
