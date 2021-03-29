@@ -2,6 +2,7 @@ from django.http import JsonResponse, HttpRequest, Http404
 from decorators.authorization import only_authorized
 from core.models import Product
 from django.db.models import Avg
+from typing import Dict
 import math
 import json
 
@@ -139,3 +140,19 @@ def product_list(request: HttpRequest) -> JsonResponse:
         }
         return JsonResponse(context)
     return Http404()
+
+
+@only_authorized
+def shipping_charge(request: HttpRequest) -> JsonResponse:
+    context: Dict[str, object] = dict()
+    if request.method == "POST":
+        body = json.loads(request.body)
+        state: str = body.get("state", None)
+        city: str = body.get("city", None)
+        street: str = body.get("street", None)
+        zip_code: str = body.get("zipCode", None)
+        if state.lower() == "khulna" and city.lower() == "khulna":
+            context["charge"] = 0
+            return JsonResponse(context)
+        context["charge"] = 4
+        return JsonResponse(context)

@@ -25,7 +25,7 @@ class Order(models.Model):
     date_delivered: datetime = models.DateTimeField(null=True, blank=True)
     cancellion_reason: str = models.CharField(max_length=500, null=True, blank=True)
     status = models.IntegerField(default=OrderStatusChoices.NOT_ORDERED, choices=OrderStatusChoices.choices)
-    shipping = models.ForeignKey(ShippingAndBilling, on_delete=models.CASCADE, null=True, blank=True, related_name="orders") 
+    shipping = models.OneToOneField(ShippingAndBilling, on_delete=models.CASCADE, null=True, blank=True, related_name="orders") 
 
     @property
     def items_count(self):

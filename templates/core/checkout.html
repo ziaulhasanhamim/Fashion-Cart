@@ -21,6 +21,11 @@
 
     <!--====== App ======-->
     <link rel="stylesheet" href="/static/css/app.css">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 
 <body class="config">
@@ -198,14 +203,16 @@
                     <div class="container">
                         <div class="checkout-f">
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-6" id="div-contain-error">
                                     <h1 class="checkout-f__h1">DELIVERY INFORMATION</h1>
                                     <h3 v-if="errors.length != 0">Fix These Errors:</h3>
-                                    <div style="margin-left: 20px;">                                        
+                                    <div style="margin-left: 20px;">
                                         <p style="color: rgb(194, 67, 67);" v-for="error in errors">[[ error ]]</p>
                                     </div>
                                     <form class="checkout-f__delivery">
                                         <div class="u-s-m-b-30">
+
+                                            {% comment %}
                                             <div class="u-s-m-b-15">
 
                                                 <!--====== Check Box ======-->
@@ -220,6 +227,8 @@
                                                 </div>
                                                 <!--====== End - Check Box ======-->
                                             </div>
+                                            {% endcomment %}
+
 
                                             <!--====== First Name, Last Name ======-->
 
@@ -250,8 +259,9 @@
 
                                                 <label class="gl-label" for="billing-email">Name *</label>
 
-                                                <input :disabled="isDisabled" v-model="name" class="input-text input-text--primary-style"
-                                                    type="text" id="billing-email" data-bill="">
+                                                <input :disabled="isDisabled" v-model="name"
+                                                    class="input-text input-text--primary-style" type="text"
+                                                    id="billing-email" data-bill="">
                                             </div>
                                             <!--====== End - E-MAIL ======-->
 
@@ -261,8 +271,9 @@
 
                                                 <label class="gl-label" for="billing-phone">PHONE *</label>
 
-                                                <input :disabled="isDisabled" v-model="phone" class="input-text input-text--primary-style"
-                                                    type="text" id="billing-phone" data-bill="">
+                                                <input :disabled="isDisabled" v-model="phone"
+                                                    class="input-text input-text--primary-style" type="text"
+                                                    id="billing-phone" data-bill="">
                                             </div>
                                             <!--====== End - PHONE ======-->
 
@@ -272,9 +283,10 @@
 
                                                 <label class="gl-label" for="billing-street">STREET ADDRESS *</label>
 
-                                                <input :disabled="isDisabled" v-model="street" class="input-text input-text--primary-style"
-                                                    type="text" id="billing-street"
-                                                    placeholder="House name and street name" data-bill="">
+                                                <input :disabled="isDisabled" v-model="street"
+                                                    class="input-text input-text--primary-style" type="text"
+                                                    id="billing-street" placeholder="House name and street name"
+                                                    data-bill="">
                                             </div>
 
                                             <!--====== End - Street Address ======-->
@@ -307,8 +319,9 @@
 
                                                 <label class="gl-label" for="billing-town-city">TOWN/CITY *</label>
 
-                                                <input :disabled="isDisabled" v-model="city" class="input-text input-text--primary-style"
-                                                    type="text" id="billing-town-city" data-bill="">
+                                                <input :disabled="isDisabled" v-model="city"
+                                                    class="input-text input-text--primary-style" type="text"
+                                                    id="billing-town-city" data-bill="">
                                             </div>
                                             <!--====== End - Town / City ======-->
 
@@ -319,8 +332,9 @@
                                                 <!--====== Select Box ======-->
 
                                                 <label class="gl-label" for="billing-state">STATE/Division *</label>
-                                                <select :disabled="isDisabled" v-model="state" class="select-box select-box--primary-style"
-                                                    id="billing-state" data-bill="">
+                                                <select :disabled="isDisabled" v-model="state"
+                                                    class="select-box select-box--primary-style" id="billing-state"
+                                                    data-bill="">
                                                     <option selected :value="null">Choose State/Division</option>
                                                     <option value="Barisal">Barisal</option>
                                                     <option value="Chittagong">Chittagong</option>
@@ -336,51 +350,61 @@
 
 
                                             <!--====== ZIP/POSTAL ======-->
+                                            
+                                            {% comment %}                                                
                                             <div class="u-s-m-b-15">
 
                                                 <label class="gl-label" for="billing-zip">ZIP/POSTAL CODE *</label>
 
-                                                <input :disabled="isDisabled" v-model="zipCode" class="input-text input-text--primary-style"
-                                                    type="text" id="billing-zip" placeholder="Zip/Postal Code"
-                                                    data-bill="">
+                                                <input :disabled="isDisabled" v-model="zipCode"
+                                                    class="input-text input-text--primary-style" type="number"
+                                                    id="billing-zip" placeholder="Zip/Postal Code" data-bill="">
                                             </div>
+                                            {% endcomment %}
+                                                
                                             <div class="o-summary__section u-s-m-b-30">
                                                 <div class="o-summary__box">
                                                     <h1 class="checkout-f__h1">PAYMENT INFORMATION</h1>
                                                     <form class="checkout-f__payment">
                                                         <div class="u-s-m-b-10">
-    
+
                                                             <!--====== Radio Box ======-->
                                                             <div class="radio-box">
-    
-                                                                <input :disabled="isDisabled" v-model="paymentOption" value="cashOnDelivery" type="radio" id="cash-on-delivery" name="payment">
+
+                                                                <input :disabled="isDisabled" v-model="paymentOption"
+                                                                    value="cashOnDelivery" type="radio"
+                                                                    id="cash-on-delivery" name="payment">
                                                                 <div class="radio-box__state radio-box__state--primary">
-    
+
                                                                     <label class="radio-box__label"
                                                                         for="cash-on-delivery">Cash on Delivery</label>
                                                                 </div>
                                                             </div>
                                                             <!--====== End - Radio Box ======-->
-    
-                                                            <span class="gl-text u-s-m-t-6">Pay Upon Cash on delivery. (This
+
+                                                            <span class="gl-text u-s-m-t-6">Pay Upon Cash on delivery.
+                                                                (This
                                                                 service is only available for some countries)</span>
                                                         </div>
                                                         <div class="u-s-m-b-10">
-    
+
                                                             <!--====== Radio Box ======-->
                                                             <div class="radio-box">
-    
-                                                                <input :disabled="isDisabled" v-model="paymentOption" value="bkash" type="radio" id="direct-bank-transfer">
+
+                                                                <input :disabled="isDisabled" v-model="paymentOption"
+                                                                    value="bkash" type="radio"
+                                                                    id="direct-bank-transfer">
                                                                 <div class="radio-box__state radio-box__state--primary">
-    
+
                                                                     <label class="radio-box__label"
                                                                         for="direct-bank-transfer">BKash</label>
                                                                 </div>
-                                                            </div>                                                            
+                                                            </div>
                                                             <!--====== End - Radio Box ======-->
-    
-                                                            <span class="gl-text u-s-m-t-6">Make Your Payment With Bkash</span>
-                                                        </div>                                                      
+
+                                                            <span class="gl-text u-s-m-t-6">Make Your Payment With
+                                                                Bkash</span>
+                                                        </div>
                                                     </form>
                                                 </div>
                                             </div>
@@ -389,15 +413,19 @@
 
                                                 <label class="gl-label" for="billing-phone">BKash Number *</label>
 
-                                                <input :disabled="isDisabled" v-model="bkashNumber" class="input-text input-text--primary-style"
-                                                    type="text" id="billing-phone" data-bill="">
+                                                <input :disabled="isDisabled" v-model="bkashNumber"
+                                                    class="input-text input-text--primary-style" type="text"
+                                                    id="billing-phone" data-bill="">
                                             </div>
+
+                                            {% comment %}
                                             <div class="u-s-m-b-10">
 
                                                 <!--====== Check Box ======-->
                                                 <div class="check-box">
 
-                                                    <input :disabled="isDisabled" type="checkbox" id="make-default-address" data-bill="">
+                                                    <input :disabled="isDisabled" type="checkbox"
+                                                        id="make-default-address" data-bill="">
                                                     <div class="check-box__state check-box__state--primary">
 
                                                         <label class="check-box__label" for="make-default-address">Make
@@ -406,8 +434,10 @@
                                                 </div>
                                                 <!--====== End - Check Box ======-->
                                             </div>
-                                            
-                                            {% comment %}                                                
+                                            {% endcomment %}
+
+
+                                            {% comment %}
                                             <div class="u-s-m-b-10">
 
                                                 <a class="gl-link" href="#create-account" data-toggle="collapse">Want to
@@ -434,22 +464,20 @@
                                                     id="order-note"></textarea>
                                             </div>
                                             {% endcomment %}
-                                                
-                                            <div>
 
-                                                <button :disabled="isDisabled" class="btn btn--e-transparent-brand-b-2"
-                                                    @click="submitShippingAddress">SAVE</button>
+                                            <div>
+                                                <button v-if="!isDisabled" class="btn btn--e-transparent-brand-b-2" @click="submitShippingAddress">SAVE</button>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
-                                
-                                <div class="col-lg-6">
+
+                                <div class="col-lg-6" id="order-summary">
                                     <h1 class="checkout-f__h1">ORDER SUMMARY</h1>
-                                    
+
                                     <!--====== Order Summary ======-->
                                     <div class="o-summary">
-                                        {% comment %}                                    
+                                        {% comment %}
                                         <div class="o-summary__section u-s-m-b-30">
                                             <div class="o-summary__item-wrap gl-scroll">
                                                 <div class="o-card">
@@ -577,30 +605,31 @@
                                                     <tbody>
                                                         <tr>
                                                             <td>SHIPPING</td>
-                                                            <td>$0.00</td>
+                                                            <td>$[[ shippingCharge ]]</td>
                                                         </tr>
                                                         <tr>
                                                             <td>SUBTOTAL</td>
-                                                            <td>$379.00</td>
+                                                            <td>$[[ subTotal ]]</td>
                                                         </tr>
                                                         <tr>
                                                             <td>GRAND TOTAL</td>
-                                                            <td>$379.00</td>
+                                                            <td>$[[ subTotal + shippingCharge ]]</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
-                                        </div>                                        
+                                        </div>
                                     </div>
                                     <!--====== End - Order Summary ======-->
                                     <div>
-    
-                                        <button class="btn btn--e-brand-b-2" type="submit">PLACE
+
+                                        <button class="btn btn--e-brand-b-2" :disabled="placeOrderDisabled"
+                                            type="submit">PLACE
                                             ORDER</button>
                                     </div>
                                 </div>
-                                
-                                    
+
+
                             </div>
                         </div>
                     </div>
@@ -976,7 +1005,7 @@
 
                                         <label class="gl-label" for="address-street">ZIP/POSTAL CODE *</label>
 
-                                        <input class="input-text input-text--primary-style" type="text"
+                                        <input class="input-text input-text--primary-style" type="number"
                                             id="address-postal" placeholder="Zip/Postal Code">
                                     </div>
                                 </div>
@@ -1010,7 +1039,9 @@
         ga('send', 'pageview')
     </script>
     <script src="https://www.google-analytics.com/analytics.js" async defer></script>
-
+    <script>
+        var sub_total = parseFloat("{{ request.cart.total_price|escapejs }}")
+    </script>
     <!--====== Vendor Js ======-->
     <script src="/static/js/vendor.js"></script>
 

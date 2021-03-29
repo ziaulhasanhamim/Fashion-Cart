@@ -1,3 +1,20 @@
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken')
+
 var app = new Vue({
     delimiters: ['[[', ']]'],
     el: '#actual-app',
@@ -8,15 +25,22 @@ var app = new Vue({
         paymentOption: "bkash",
         state: null,
         city: null,
-        zipCode: null,
+        // zipCode: null,
         street: null,
-        isDisabled: true,
-        errors: []
+        isDisabled: false,
+        errors: [],
+        subTotal: sub_total,
+        shippingCharge: 0,
+        placeOrderDisabled: true
     },
     methods: {
         submitShippingAddress(e) {
             e.preventDefault()
             this.errors = []
+            // this.zipCode = parseInt(this.zipCode)
+            // if(isNaN(this.zipCode)) {
+            //     this.errors.push("Zip Code Should be An Integer number")
+            // }
             if(!this.name) {
                 this.errors.push("Name Is required")
             }
@@ -38,6 +62,30 @@ var app = new Vue({
             if(this.paymentOption == "bkash" && !this.bkashNumber) {
                 this.errors.push("BKash Number Is required")
             }
+            if (this.errors.length == 0) {
+                fetch("/api/shipping_charge", {
+                    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({
+                        state: this.state,
+                        city: this.city,
+                        zipCode: this.zipCode,
+                        street: this.street
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    this.shippingCharge = data["charge"]
+                    this.placeOrderDisabled = false
+                    this.isDisabled = true
+                });
+                document.getElementById("order-summary").scrollIntoView()
+                return;
+            }
+            document.getElementById("div-contain-error").scrollIntoView()
         }
     }
 })

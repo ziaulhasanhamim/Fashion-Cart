@@ -11,7 +11,7 @@ class ShippingAndBilling(models.Model):
     state = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     street_address = models.CharField(max_length=500)
-    zip_code = models.IntegerField()
     phone_number = models.CharField(max_length=20, null=True, blank=True)
     payment_option = models.IntegerField(default=PaymentOptionChoies.BKASH, choices=PaymentOptionChoies.choices)
     bkash_number = models.CharField(max_length=20, null=True, blank=True)
+    shipping_charge = models.IntegerField(default=0)
