@@ -13,7 +13,7 @@ def only_authorized(func: Callable[[HttpRequest], HttpResponse]) -> Callable[[Ht
 
 
 def only_anonymous(func: Callable[[HttpRequest], HttpResponse]) -> Callable[[HttpRequest], HttpResponse]:
-    def wrapper(request: HttpRequest) -> HttpResponse:
+    def wrapper(request: HttpRequest) -> HttpResponse:        
         if not request.user.is_authenticated:
             return func(request)
         else:

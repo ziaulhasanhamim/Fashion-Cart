@@ -25,6 +25,50 @@
         html {
             scroll-behavior: smooth;
         }
+
+        .lds-facebook {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .lds-facebook div {
+            display: inline-block;
+            position: absolute;
+            left: 8px;
+            width: 16px;
+            background: #d73925;
+            animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+        }
+
+        .lds-facebook div:nth-child(1) {
+            left: 8px;
+            animation-delay: -0.24s;
+        }
+
+        .lds-facebook div:nth-child(2) {
+            left: 32px;
+            animation-delay: -0.12s;
+        }
+
+        .lds-facebook div:nth-child(3) {
+            left: 56px;
+            animation-delay: 0;
+        }
+
+        @keyframes lds-facebook {
+            0% {
+                top: 8px;
+                height: 64px;
+            }
+
+            50%,
+            100% {
+                top: 24px;
+                height: 32px;
+            }
+        }
     </style>
 </head>
 
@@ -350,8 +394,8 @@
 
 
                                             <!--====== ZIP/POSTAL ======-->
-                                            
-                                            {% comment %}                                                
+
+                                            {% comment %}
                                             <div class="u-s-m-b-15">
 
                                                 <label class="gl-label" for="billing-zip">ZIP/POSTAL CODE *</label>
@@ -361,7 +405,7 @@
                                                     id="billing-zip" placeholder="Zip/Postal Code" data-bill="">
                                             </div>
                                             {% endcomment %}
-                                                
+
                                             <div class="o-summary__section u-s-m-b-30">
                                                 <div class="o-summary__box">
                                                     <h1 class="checkout-f__h1">PAYMENT INFORMATION</h1>
@@ -466,7 +510,8 @@
                                             {% endcomment %}
 
                                             <div>
-                                                <button v-if="!isDisabled" class="btn btn--e-transparent-brand-b-2" @click="submitShippingAddress">SAVE</button>
+                                                <button v-if="!isDisabled" class="btn btn--e-transparent-brand-b-2"
+                                                    @click="submitShippingAddress">SAVE</button>
                                             </div>
                                         </div>
                                     </form>
@@ -621,11 +666,14 @@
                                         </div>
                                     </div>
                                     <!--====== End - Order Summary ======-->
-                                    <div>
+                                    <div v-if="isPlaceOrderShown">
 
-                                        <button class="btn btn--e-brand-b-2" :disabled="placeOrderDisabled"
-                                            type="submit">PLACE
-                                            ORDER</button>
+                                        <button class="btn btn--e-brand-b-2" :disabled="placeOrderDisabled" type="submit"
+                                            @click="placeOrder">PLACE ORDER</button>
+                                    </div>
+                                    <div v-if="submitting" style="text-align: center;">
+                                        <div class="lds-facebook"><div></div><div></div><div></div></div>
+                                        <p>Placing Order</p>
                                     </div>
                                 </div>
 
@@ -705,7 +753,7 @@
                                                 </li>
                                                 <li>
 
-                                                    <a href="dashboard.html">Account</a>
+                                                    GRAND                                     <a href="dashboard.html">Account</a>
                                                 </li>
                                                 <li>
 

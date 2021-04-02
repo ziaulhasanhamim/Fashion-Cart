@@ -124,5 +124,7 @@ def category_gender_products(request: HttpRequest, category: str, gender: str) -
 
 @only_authorized
 def checkout(request: HttpRequest) -> HttpResponse:
+    if request.cart.items_count <= 0:
+        return redirect("/")
     context: Dict[str, object] = dict()
     return render(request, "core/checkout.html", context)

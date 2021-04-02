@@ -6,5 +6,6 @@ app_name = "api"
 urlpatterns = [
     path("cart", views.cart, name="cart"),
     path("products", views.product_list, name="products"),
-    path("shipping_charge", views.shipping_charge, name="shipping_charge")
+    path("shipping_charge", views.shipping_charge, name="shipping_charge"),
+    path("place_order", views.place_order, name="place-order")
 ]

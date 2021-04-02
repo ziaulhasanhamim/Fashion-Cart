@@ -1,10 +1,11 @@
-from django.http import JsonResponse, HttpRequest, Http404
+from django.http import JsonResponse, HttpRequest, Http404, HttpResponseForbidden
 from decorators.authorization import only_authorized
-from core.models import Product
+from core.models import Product, ShippingAndBilling, PaymentOptionChoies, OrderStatusChoices
 from django.db.models import Avg
 from typing import Dict
 import math
 import json
+import datetime
 
 
 @only_authorized
@@ -149,10 +150,44 @@ def shipping_charge(request: HttpRequest) -> JsonResponse:
         body = json.loads(request.body)
         state: str = body.get("state", None)
         city: str = body.get("city", None)
-        street: str = body.get("street", None)
-        zip_code: str = body.get("zipCode", None)
         if state.lower() == "khulna" and city.lower() == "khulna":
             context["charge"] = 0
             return JsonResponse(context)
         context["charge"] = 4
         return JsonResponse(context)
+
+@only_authorized
+def place_order(request: HttpRequest) -> JsonResponse:
+    if request.method == "POST":
+        body = json.loads(request.body)
+        state: str = body.get("state", None)
+        city: str = body.get("city", None)
+        street: str = body.get("street", None)
+        name: str = body.get("name", None)
+        phone: str = body.get("phone", None)
+        payment_option: str = body.get("paymentOption", "bkash")
+        bkash_number: str = body.get("bkashNumber", None)
+        if state and city and street and name and phone:
+            if payment_option == "bkash" and not bkash_number:
+                return HttpResponseForbidden("Bad Request")
+            shipping = ShippingAndBilling()
+            shipping.name = name
+            shipping.state = state
+            shipping.city = city
+            shipping.street_address = street
+            shipping.phone_number = phone
+            if payment_option == "bkash":
+                shipping.payment_option = PaymentOptionChoies.BKASH
+                shipping.bkash_number = bkash_number
+            else:                
+                shipping.payment_option = PaymentOptionChoies.CASH_ON_DELIVERY
+            if state.lower() == "khulna" and city.lower() == "khulna":
+                shipping.shipping_charge = 0
+            else:
+                shipping.shipping_charge = 4
+            shipping.save()
+            request.cart.shipping = shipping
+            request.cart.date_ordered = datetime.datetime.now()
+            request.cart.status = OrderStatusChoices.PENDING
+            request.cart.save()
+            return JsonResponse("Order Updated", safe=False)
