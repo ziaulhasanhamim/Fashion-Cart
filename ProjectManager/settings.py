@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'accounts',
     'ckeditor',
     'ckeditor_uploader',
-    'api'
+    'api',
+    'custom_admin'
 ]
 
 CKEDITOR_UPLOAD_PATH = "product_detail_images/"
@@ -112,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Dhaka'
 
 USE_I18N = True
 

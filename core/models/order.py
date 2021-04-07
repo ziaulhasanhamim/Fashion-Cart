@@ -20,12 +20,17 @@ class OrderStatusChoices(models.IntegerChoices):
 
 
 class Order(models.Model):
-    user: Customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer: Customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     date_ordered: datetime = models.DateTimeField(null=True, blank=True)
     date_delivered: datetime = models.DateTimeField(null=True, blank=True)
     cancellion_reason: str = models.CharField(max_length=500, null=True, blank=True)
     status = models.IntegerField(default=OrderStatusChoices.NOT_ORDERED, choices=OrderStatusChoices.choices)
     shipping = models.OneToOneField(ShippingAndBilling, on_delete=models.CASCADE, null=True, blank=True, related_name="orders") 
+
+    def get_status(self) -> str:
+        for item in OrderStatusChoices.choices:
+            if item[0] == self.status:
+                return item[1]
 
     @property
     def items_count(self):

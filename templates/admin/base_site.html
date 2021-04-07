@@ -1,0 +1,10 @@
+{% extends 'admin/base.html' %}
+{% block title %}Fashion Cart Admin Panel{% endblock %}
+{% block branding %}
+<h1 id="site-name">Fashion Cart Admin Panel</h1>
+{% endblock branding %}
+{% block welcome-msg %}
+Welcome
+<strong>{% firstof user.get_short_name user.get_username %}</strong>.
+<a href="/admin/orders">See Orders</a>
+{% endblock %}
