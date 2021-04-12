@@ -162,19 +162,19 @@ def place_order(request: HttpRequest) -> JsonResponse:
         body = json.loads(request.body)
         state: str = body.get("state", None)
         city: str = body.get("city", None)
-        street: str = body.get("street", None)
+        address: str = body.get("address", None)
         name: str = body.get("name", None)
         phone: str = body.get("phone", None)
         payment_option: str = body.get("paymentOption", "bkash")
         bkash_number: str = body.get("bkashNumber", None)
-        if state and city and street and name and phone:
+        if state and city and address and name and phone:
             if payment_option == "bkash" and not bkash_number:
                 return HttpResponseForbidden("Bad Request")
             shipping = ShippingAndBilling()
             shipping.name = name
             shipping.state = state
             shipping.city = city
-            shipping.street_address = street
+            shipping.address = address
             shipping.phone_number = phone
             if payment_option == "bkash":
                 shipping.payment_option = PaymentOptionChoies.BKASH

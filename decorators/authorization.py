@@ -22,9 +22,9 @@ def only_anonymous(func: Callable[[HttpRequest], HttpResponse]) -> Callable[[Htt
 
 
 def only_admin(func: Callable[[HttpRequest], HttpResponse]) -> Callable[[HttpRequest], HttpResponse]:
-    def wrapper(request: HttpRequest) -> HttpResponse:
+    def wrapper(request: HttpRequest, *args, **kwargs) -> HttpResponse:
         if request.user.is_authenticated and request.user.is_superuser:
-            return func(request)
+            return func(request, *args, **kwargs)
         else:
             return redirect(f"/admin/login?next={request.path}")
     return wrapper

@@ -47,6 +47,13 @@ class Order(models.Model):
             total += item.get_net_price()
         return total
 
+    @property
+    def total_price_with_shipping(self) -> float:
+        total = 0;
+        for item in self.order_items.all().select_related("product"):
+            total += item.get_net_price()
+        return total + self.shipping.shipping_charge
+
     def get_items(self):
         return self.order_items.all().select_related("product")
 

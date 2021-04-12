@@ -55,7 +55,7 @@
                         <td>{{ order.shipping.phone_number }}</td>
                         <td>{{ order.get_status }}</td>
                         <td>{{ order.date_ordered }}</td>
-                        <td><a href="" class="btn btn-primary btn-sm">Manage</a></td>
+                        <td><a href="{% url 'custom_admin:manage_orders' order.id %}" class="btn btn-primary btn-sm">Manage</a></td>
                     </tr>
                 {% endfor %}
                     

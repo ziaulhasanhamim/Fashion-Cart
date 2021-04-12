@@ -26,7 +26,7 @@ var app = new Vue({
         state: null,
         city: null,
         // zipCode: null,
-        street: null,
+        address: null,
         isDisabled: false,
         errors: [],
         subTotal: sub_total,
@@ -58,8 +58,8 @@ var app = new Vue({
             // if(!this.zipCode) {
             //     this.errors.push("Zip Code Is required")
             // }
-            if(!this.street) {
-                this.errors.push("Street Is required")
+            if(!this.address) {
+                this.errors.push("Address Is required")
             }
             if(this.paymentOption == "bkash" && !this.bkashNumber) {
                 this.errors.push("BKash Number Is required")
@@ -99,7 +99,7 @@ var app = new Vue({
                 body: JSON.stringify({
                     state: this.state,
                     city: this.city,
-                    street: this.street,
+                    address: this.address,
                     name: this.name,
                     paymentOption: this.paymentOption,
                     phone: this.phone,
