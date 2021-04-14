@@ -13,5 +13,6 @@ urlpatterns = [
     path("products/gender/<gender>", views.gender_products, name="products-gender"),
     path("products/gender/<gender>", views.gender_products, name="products-gender"),
     path("products/category/<category>/gender/<gender>", views.category_gender_products, name="products-category-gender"),
-    path("checkout", views.checkout, name="checkout")
+    path("checkout", views.checkout, name="checkout"),
+    path("test", views.test, name="test")
 ]

@@ -1822,11 +1822,41 @@
                                         </div>
                                         <br>
                                         <br>
+                                        
+                                        {% if order.status == -1 %}
                                         <div class="col-lg-6" id="actual-app">
                                             <div class="form-group">
                                                 <label for="FormControlSelect1">Order Status:</label>
                                                 <br>
-                                                <select v-model="status" name="status" class="form-control" id="FormControlSelect1">
+                                                <span class="form-control" readonly >{{ order.get_status }}</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <br>
+                                                <br>
+                                                <label for="exampleInputEmail1">Cancellation Reason</label>
+                                                <input type="text" readonly value="{{ order.cancellion_reason }}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="cancellation-reason">
+                                            </div>
+                                        </div>
+                                        {% elif order.status == 3 %}
+                                        <div class="col-lg-6" id="actual-app">
+                                            <div class="form-group">
+                                                <label for="FormControlSelect1">Order Status:</label>
+                                                <br>
+                                                <span class="form-control" >{{ order.get_status }}</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <br>
+                                                <br>
+                                                <label for="exampleInputEmail1">Date Delivered</label>
+                                                <input type="text" readonly value="{{ order.date_delivered }}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="cancellation-reason">
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <div class="col-lg-6" id="actual-app">
+                                            <div class="form-group">
+                                                <label for="FormControlSelect1">Order Status:</label>
+                                                <br>
+                                                <select required v-model="status" name="status" class="form-control" id="FormControlSelect1">
                                                     {% if order.status == 1 %}
                                                     <option value="1" selected>Pending</option>
                                                     {% else %}
@@ -1848,14 +1878,30 @@
                                                     <option value="-1">Cancelled</option>
                                                     {% endif %}
                                                 </select>
+                                                
+                                                {% if errors.status %}
+                                                <span class="text-danger">{{ errors.status }}</span>
+                                                {% endif %}
+                                                    
                                             </div>
                                             <div class="form-group" v-if="status == -1">
                                                 <br>
                                                 <br>
                                                 <label for="exampleInputEmail1">Cancellation Reason</label>
-                                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="CancellationReason">
+                                                <input required type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="cancellation-reason">
+                                            </div>
+                                            <div class="form-group" v-if="status == 3">
+                                                <br>
+                                                <br>
+                                                <label for="exampleInputEmail2">Date Delivered</label>
+                                                <input required type="datetime" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" name="date-delivered">
+                                                {% if errors.date_delivered %}
+                                                <span class="text-danger">{{ errors.date_delivered }}</span>
+                                                {% endif %}
                                             </div>
                                         </div>
+                                        {% endif %}
+                                            
                                         <br>
                                         <br>
                                         <div class="row">
@@ -1948,9 +1994,17 @@
         ga('create', 'UA-XXXXX-Y', 'auto');
         ga('send', 'pageview')
     </script>
+    
+    {% if status %}
+    <script>
+        var status = parseInt("{{status|escapejs}}")
+    </script>
+    {% else %}
     <script>
         var status = parseInt("{{order.status|escapejs}}")
     </script>
+    {% endif %}
+        
     <script src="https://www.google-analytics.com/analytics.js" async defer></script>
 
     <!--====== Vendor Js ======-->

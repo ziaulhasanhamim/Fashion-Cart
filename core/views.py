@@ -4,6 +4,7 @@ from typing import Dict
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from decorators.authorization import only_authorized
 import json
+import datetime
 from .models import Product, Category, Slider, Order, OrderItem, Review
 
 
@@ -18,6 +19,14 @@ def index(request: HttpRequest) -> HttpResponse :
         "sliders": Slider.objects.filter(enabled=True),
     }
     return render(request, "core/index.html", context)
+
+
+def test(request):
+    try:
+        print(datetime.datetime.strptime(request.POST["date"], '%Y-%m-%d, %H:%M:%S'))
+    except ValueError:
+        print(datetime.datetime.strptime(request.POST["date"], '%Y-%m-%d'))
+    return render(request, "core/test.html", {})
 
 
 @only_authorized
