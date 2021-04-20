@@ -275,14 +275,14 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td>TOTAL</td>
-                                                                <td>${{ request.cart.total_price }}</td>
+                                                                <td>$[[ totalPrice ]]</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
                                                 <div>
 
-                                                    <button class="btn btn--e-brand-b-2" type="submit"> PROCEED TO CHECKOUT</button></div>
+                                                    <a class="btn btn--e-brand-b-2" href="{% url 'core:checkout' %}"> PROCEED TO CHECKOUT</a></div>
                                             </div>
                                         </div>
                                     </div>
@@ -472,6 +472,9 @@
     </script>
     <script src="https://www.google-analytics.com/analytics.js" async defer></script>
 
+    <script>
+        var total = parseInt("{{request.cart.total_price|escapejs}}");
+    </script>
     <!--====== Vendor Js ======-->
     <script src="/static/js/vendor.js"></script>
 

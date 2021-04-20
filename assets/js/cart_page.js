@@ -19,8 +19,16 @@ var app = new Vue({
     delimiters: ['[[', ']]'],
     el: '#app-actually',
     data: {
-        message: 'Hello Vue!',
-        items : []
+        items : [],
+    },
+    computed: {
+        totalPrice() {
+            let total = 0;
+            for (const item of this.items) {
+                total += item.quantity * item.price
+            }
+            return total
+        }
     },
     beforeCreate() {
         fetch("/api/cart")
@@ -32,7 +40,7 @@ var app = new Vue({
         async addQuantity(e, index) {
             if (this.items[index].quantity < 100) {
                 this.items[index].quantity += 1;
-                const res = await fetch("/api/cart", {
+                await fetch("/api/cart", {
                     method: 'POST', // *GET, POST, PUT, DELETE, etc.
                     headers: {
                         'Content-Type': 'application/json',
@@ -49,7 +57,7 @@ var app = new Vue({
         async removeQuantity(e, index) {
             if (this.items[index].quantity > 1) {
                 this.items[index].quantity -= 1;
-                const res = await fetch("/api/cart", {
+                await fetch("/api/cart", {
                     method: 'POST', // *GET, POST, PUT, DELETE, etc.
                     headers: {
                         'Content-Type': 'application/json',
@@ -66,7 +74,7 @@ var app = new Vue({
         async remove(e, index) {
             let productId = this.items[index].id;
             this.$delete(this.items, index);
-            const res = await fetch("/api/cart", {
+            await fetch("/api/cart", {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 headers: {
                     'Content-Type': 'application/json',
@@ -77,11 +85,10 @@ var app = new Vue({
                     op: "remove"
                 })
             });
-            const data = await res.json();
         },
         async removeAll(e) {
             this.items = []
-            const res = await fetch("/api/cart", {
+            await fetch("/api/cart", {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 headers: {
                     'Content-Type': 'application/json',

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login as login_user, logout as logout_user
 from django.http import HttpRequest, HttpResponse
 import string
-from decorators.authorization import only_anonymous
+from decorators.authorization import only_anonymous, only_authorized
 
 
 @only_anonymous
@@ -68,3 +68,9 @@ def login(request: HttpRequest) -> HttpResponse:
 def logout(request: HttpRequest) -> HttpResponse:
     logout_user(request)
     return redirect("accounts:login")
+
+
+@only_authorized
+def profile(request: HttpRequest) -> HttpResponse:
+    context: Dict[str, object] = dict()
+    return render(request, "accounts/profile.html", context)

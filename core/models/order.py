@@ -9,14 +9,7 @@ from django.core.exceptions import ValidationError
 from core.models.product import Product
 from core.models.shipping import ShippingAndBilling
 from core.models.customer import Customer
-
-
-class OrderStatusChoices(models.IntegerChoices):
-    NOT_ORDERED = 0, "Not Ordered"
-    PENDING = 1, "Pending"
-    PROCESSING = 2, "Processing"
-    DELIVERED = 3, "Delivered"
-    CANCELLED = -1, "Cancelled"
+from core.models.order_status_choices import OrderStatusChoices
 
 
 class Order(models.Model):
