@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login as login_user, logout as logout_user
 from django.http import HttpRequest, HttpResponse
 import string
+from core.models import Order
 from decorators.authorization import only_anonymous, only_authorized
 
 
@@ -74,3 +75,10 @@ def logout(request: HttpRequest) -> HttpResponse:
 def profile(request: HttpRequest) -> HttpResponse:
     context: Dict[str, object] = dict()
     return render(request, "accounts/profile.html", context)
+
+
+@only_authorized
+def orders(request: HttpRequest) -> HttpResponse:
+    context: Dict[str, object] = dict()
+    context["orders"] = Order.objects.filter(date_ordered__isnull=False).order_by("-date_ordered")
+    return render(request, "accounts/orders.html", context)

@@ -8,6 +8,7 @@
             <ul class="dash__f-list">
                 <li>
                     {% url 'accounts:profile' as profile %}
+                    {% url 'accounts:orders' as orders %}
                     <a
                     
                     {% if request.path == profile %}
@@ -19,11 +20,11 @@
                 <li>
                     <a
                     
-                    {% if active == "orders" %}
+                    {% if request.path == orders %}
                         class="dash-active" 
                     {% endif %}
                         
-                    href="dash-my-profile.html">Orders</a>
+                    href="{{ orders }}">Orders</a>
                 </li>
             </ul>
         </div>

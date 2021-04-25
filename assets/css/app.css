@@ -5117,6 +5117,11 @@ input::-ms-clear {
   color: #ff4500;
 }
 
+.badge--pending {
+  background-color: rgba(255, 101, 30, 0.1);
+  color: #eb815b;
+}
+
 @media (max-width: 991px) {
   .dash__box--w {
     margin-bottom: 30px;
