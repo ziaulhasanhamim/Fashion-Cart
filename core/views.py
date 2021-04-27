@@ -71,7 +71,7 @@ def product_detail(request: HttpRequest, slug: str) -> HttpResponse :
         context["user_given_review"] = False
         context["user_review"] = None
         if request.user.is_authenticated:
-            review_query = Review.objects.filter(product=product, user=request.user)
+            review_query = Review.objects.filter(product=product, user=request.user.customer)
             context["user_given_review"] = review_query.exists()
             context["user_review"] = review_query.first() if context["user_given_review"] else None
         return render(request, "core/product-detail.html", context)

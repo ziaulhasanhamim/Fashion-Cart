@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from typing import Dict
 from django.contrib.auth.models import User
 from django.contrib.auth import login as login_user, logout as logout_user
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, Http404
 import string
 from core.models import Order
 from decorators.authorization import only_anonymous, only_authorized
@@ -82,3 +82,13 @@ def orders(request: HttpRequest) -> HttpResponse:
     context: Dict[str, object] = dict()
     context["orders"] = Order.objects.filter(date_ordered__isnull=False).order_by("-date_ordered")
     return render(request, "accounts/orders.html", context)
+
+
+@only_authorized
+def order_details(request: HttpRequest, id: int) -> HttpResponse:
+    context: Dict[str, object] = dict()
+    order_query = Order.objects.filter(date_ordered__isnull=False, customer=request.user.customer, id=id)
+    if order_query.exists():
+        context["order"] = order_query.first()
+        return render(request, "accounts/order-details.html", context)
+    raise Http404()

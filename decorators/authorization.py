@@ -4,9 +4,9 @@ from django.shortcuts import redirect, reverse
 
 
 def only_authorized(func: Callable[[HttpRequest], HttpResponse]) -> Callable[[HttpRequest], HttpResponse]:
-    def wrapper(request: HttpRequest) -> HttpResponse:
+    def wrapper(request: HttpRequest, *args, **kwargs) -> HttpResponse:
         if request.user.is_authenticated:
-            return func(request)
+            return func(request, *args, **kwargs)
         else:
             return redirect(reverse("accounts:login") + f"?returnurl={request.path}")
     return wrapper

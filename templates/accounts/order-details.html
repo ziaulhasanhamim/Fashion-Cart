@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link href="/static/images/favicon.png" rel="shortcut icon">
-    <title>Fashion Cart - Your All Orders</title>
+    <title>Fashion Cart - Order Details</title>
 
     <!--====== Google Font ======-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
@@ -33,15 +33,8 @@
 
         <!--====== Main Header ======-->
         <header class="header--style-1 header--box-shadow">
-
-            <!--====== Nav 1 ======-->
             {% include 'components/primary-nav-2.html' %}
-            <!--====== End - Nav 1 ======-->
-
-
-            <!--====== Nav 2 ======-->
             {% include 'components/secondary-nav-2.html' %}
-            <!--====== End - Nav 2 ======-->
         </header>
         <!--====== End - Main Header ======-->
 
@@ -59,11 +52,14 @@
                             <div class="breadcrumb__wrap">
                                 <ul class="breadcrumb__list">
                                     <li class="has-separator">
-
-                                        <a href="{% url 'core:index' %}">Home</a></li>
+                                        <a href="{% url 'core:index' %}">Home</a>
+                                    </li>
+                                    <li class="has-separator">
+                                        <a href="{% url 'accounts:orders' %}">My Order Orders</a>
+                                    </li>
                                     <li class="is-marked">
-
-                                        <a href="{% url 'accounts:orders' %}">My Account</a></li>
+                                        <a href="{% url 'accounts:order-detail' order.id %}">Order #{{ order.id }} Details</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -83,57 +79,173 @@
                             <div class="row">
                                 {% include 'components/dashboard_menu.html' %}
                                 <div class="col-lg-9 col-md-12">
+                                    <h1 class="dash__h1 u-s-m-b-30">Order Details</h1>
                                     <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
                                         <div class="dash__pad-2">
-                                            <h1 class="dash__h1 u-s-m-b-14">My Orders</h1>
+                                            <div class="dash-l-r">
+                                                <div>
+                                                    <div class="manage-o__text-2 u-c-secondary">Order #{{ order.id }}</div>
+                                                    <div class="manage-o__text u-c-silver">Placed on {{ order.date_ordered }}</div>
+                                                </div>
+                                                <div>
+                                                    <div class="manage-o__text-2 u-c-silver">Total:
 
-                                            <span class="dash__text u-s-m-b-30">Here you can see all products that have been delivered.</span>
-                                            <div class="m-order__list">
-                                                
-                                                {% for order in orders %}    
-                                                <div class="m-order__get">
-                                                    <div class="manage-o__header u-s-m-b-30">
-                                                        <div class="dash-l-r">
-                                                            <div>
-                                                                <div class="manage-o__text-2 u-c-secondary">Order #{{ order.id }}</div>
-                                                                <div class="manage-o__text u-c-silver">Placed on {{ order.date_ordered }}</div>
+                                                        <span class="manage-o__text-2 u-c-secondary">${{ order.total_price_with_shipping }}</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                        <div class="dash__pad-2">
+                                            <div class="manage-o">
+                                                <div class="manage-o__header u-s-m-b-30">
+                                                    <div class="manage-o__icon"><i class="fas fa-box u-s-m-r-5"></i>
+
+                                                        <span class="manage-o__text">Package</span></div>
+                                                </div>
+                                                {% if order.date_delivered %}
+                                                <div class="dash-l-r">   
+                                                    <div class="manage-o__text u-c-secondary">Delivered on {{ order.date_delivered }}</div>
+                                                </div>
+                                                {% endif %}
+                                                {% if order.status == -1 %}
+                                                    <p style="color: rgb(245, 66, 66); font-weight: bold;">Order Has Been Cancelled</p>
+                                                    <p style="color: rgb(245, 66, 66); font-weight: bold;">Reason: {{ order.cancellion_reason }}</p>
+                                                    <br>
+                                                    <br>
+                                                {% else %}
+                                                <div class="manage-o__timeline">
+                                                    <div class="timeline-row">
+                                                        <div class="col-lg-4 u-s-m-b-30">
+                                                            <div class="timeline-step">
+                                                                <div class="timeline-l-i 
+                                                                {% if order.status > 0 %}
+                                                                timeline-l-i--finish
+                                                                {% endif %}
+                                                                ">
+                                                                    <span class="timeline-circle"></span>
+                                                                </div>
+
+                                                                <span class="timeline-text">Pending</span>
                                                             </div>
-                                                            <div>
-                                                                <div class="dash__link dash__link--brand">
+                                                        </div>
+                                                        <div class="col-lg-4 u-s-m-b-30">
+                                                            <div class="timeline-step">
+                                                                <div class="timeline-l-i
+                                                                {% if order.status > 1 %}
+                                                                timeline-l-i--finish
+                                                                {% endif %}
+                                                                ">
 
-                                                                    <a href="{% url 'accounts:order-detail' order.id %}">Details</a></div>
+                                                                    <span class="timeline-circle"></span></div>
+
+                                                                <span class="timeline-text">Processing</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 u-s-m-b-30">
+                                                            <div class="timeline-step">
+                                                                <div class="timeline-l-i
+                                                                {% if order.status > 2 %}
+                                                                timeline-l-i--finish
+                                                                {% endif %}
+                                                                ">
+
+                                                                    <span class="timeline-circle"></span>
+                                                                </div>
+
+                                                                <span class="timeline-text">Delivered</span>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="manage-o__description">
-                                                        <div class="description__info-wrap">
-                                                            <div>
-                                                                
-                                                                {% if order.status == 3 %}
-                                                                <span class="manage-o__badge badge--shipped">{{ order.get_status }}</span>
-                                                                {% elif order.status == 2 %}
-                                                                <span class="manage-o__badge badge--processing">{{ order.get_status }}</span>
-                                                                {% elif order.status == 1 %}
-                                                                <span class="manage-o__badge badge--pending">{{ order.get_status }}</span>
-                                                                {% else %}
-                                                                <span class="manage-o__badge badge--delivered">{{ order.get_status }}</span>
-                                                                {% endif %}
-                                                            </div>
-                                                            <div>
-                                                                <span class="manage-o__text-2 u-c-silver">Net Quantity:
+                                                </div>
+                                                {% endif %}
+                                                
+                                                {% for item in order.order_items.all %}    
+                                                <div class="manage-o__description">
+                                                    <div class="description__container">
+                                                        <div class="description__img-wrap">
 
-                                                                    <span class="manage-o__text-2 u-c-secondary">{{ order.items_count }}</span>
-                                                                </span>
-                                                            </div>
-                                                            <div>
-                                                                <span class="manage-o__text-2 u-c-silver">Total Price:
-
-                                                                    <span class="manage-o__text-2 u-c-secondary">${{ order.total_price }}</span></span></div>
+                                                            <img class="u-img-fluid" src="{{ item.product.thumbnail.url }}" alt="{{ item.product.title }}">
                                                         </div>
+                                                        <div class="description-title">{{ item.product.title }}</div>
+                                                    </div>
+                                                    <div class="description__info-wrap">
+                                                        <div>
+
+                                                            <span class="manage-o__text-2 u-c-silver">Quantity:
+
+                                                                <span class="manage-o__text-2 u-c-secondary">{{ item.quantity }}</span></span></div>
+                                                        <div>
+
+                                                            <span class="manage-o__text-2 u-c-silver">Total:
+
+                                                                <span class="manage-o__text-2 u-c-secondary">${{ item.get_net_price }}</span></span></div>
                                                     </div>
                                                 </div>
                                                 {% endfor %}
                                                     
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
+                                                <div class="dash__pad-3">
+                                                    <h2 class="dash__h2 u-s-m-b-8">Shipping Address</h2>
+                                                    <h2 class="dash__h2 u-s-m-b-8">
+                                                        {{ order.shipping.name }}
+                                                    </h2>
+                                                    <span class="dash__text-2">
+                                                        <b>State:</b> {{ order.shipping.state }}
+                                                    </span>
+                                                    <span class="dash__text-2">
+                                                        <b>City:</b> {{ order.shipping.city }}
+                                                    </span>
+                                                    <span class="dash__text-2">
+                                                        <b>Address:</b> {{ order.shipping.address }}
+                                                    </span>
+
+                                                    <span class="dash__text-2">
+                                                        <b>Phone Number:</b> {{ order.shipping.phone_number }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="dash__box dash__box--bg-white dash__box--shadow u-h-100">
+                                                <div class="dash__pad-3">
+                                                    <h2 class="dash__h2 u-s-m-b-8">Total Summary</h2>
+                                                    <div class="dash-l-r u-s-m-b-8">
+                                                        <div class="manage-o__text-2 u-c-secondary">Subtotal</div>
+                                                        <div class="manage-o__text-2 u-c-secondary">
+                                                            ${{ order.total_price }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="dash-l-r u-s-m-b-8">
+                                                        <div class="manage-o__text-2 u-c-secondary">Shipping Fee
+                                                        </div>
+                                                        <div class="manage-o__text-2 u-c-secondary">
+                                                            ${{ order.shipping.shipping_charge }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="dash-l-r u-s-m-b-8">
+                                                        <div class="manage-o__text-2 u-c-secondary">Total</div>
+                                                        <div class="manage-o__text-2 u-c-secondary">
+                                                            ${{ order.total_price_with_shipping }}
+                                                        </div>
+                                                    </div>
+
+                                                    <span class="dash__text-2">
+                                                        Paid by {{ order.shipping.get_payment_method }}
+                                                    </span>
+
+                                                    {% if order.shipping.bkash_number %}
+                                                    <span class="dash__text-2">
+                                                        <b>Bkash Number:</b> {{ order.shipping.bkash_number }}
+                                                    </span>
+                                                    {% endif %}
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
