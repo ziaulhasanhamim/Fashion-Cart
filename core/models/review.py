@@ -24,7 +24,7 @@ RATINGS_CHOICES = (
 
 class Review(models.Model):
     rating = models.FloatField(choices=RATINGS_CHOICES)
-    user: Customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="reviews")
+    customer: Customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="reviews")
     message = models.TextField()
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews")
     timestamp = models.DateTimeField(auto_now_add=True)

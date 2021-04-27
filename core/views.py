@@ -12,8 +12,8 @@ def index(request: HttpRequest) -> HttpResponse :
     context = {
         "latest_men_products": Product.objects.filter(for_gender="men").order_by("-timestamp").prefetch_related("categories")[:20],
         "latest_women_products": Product.objects.filter(for_gender="women").order_by("-timestamp").prefetch_related("categories")[:20],
-        "best_sold_men_products": Product.objects.filter(for_gender="men").order_by("sold").prefetch_related("categories")[:20],
-        "best_sold_women_products": Product.objects.filter(for_gender="women").order_by("sold").prefetch_related("categories")[:20],
+        "best_sold_men_products": Product.objects.filter(for_gender="men").order_by("-sold").prefetch_related("categories")[:20],
+        "best_sold_women_products": Product.objects.filter(for_gender="women").order_by("-sold").prefetch_related("categories")[:20],
         "men_categories": Category.objects.filter(featured_in="men").exclude(image='').order_by("?")[:4],
         "women_categories": Category.objects.filter(featured_in="women").exclude(image='').order_by("?")[:4],
         "sliders": Slider.objects.filter(enabled=True),
@@ -71,7 +71,7 @@ def product_detail(request: HttpRequest, slug: str) -> HttpResponse :
         context["user_given_review"] = False
         context["user_review"] = None
         if request.user.is_authenticated:
-            review_query = Review.objects.filter(product=product, user=request.user.customer)
+            review_query = Review.objects.filter(product=product, customer=request.user.customer)
             context["user_given_review"] = review_query.exists()
             context["user_review"] = review_query.first() if context["user_given_review"] else None
         return render(request, "core/product-detail.html", context)
@@ -90,14 +90,14 @@ def update_reviews(request: HttpRequest) -> HttpResponse:
         if product_query.exists():
             rating = float(request.POST.get("rating", "5.0"))
             msg = request.POST.get("message", "")
-            review_query = Review.objects.filter(product_id=product_id, user=request.user)
+            review_query = Review.objects.filter(product_id=product_id, customer=request.user.customer)
             if review_query.exists():
                 review = review_query.first()
                 review.rating = rating
                 review.message = msg
                 review.save()
             else:
-                Review.objects.create(rating=rating, message=msg, product_id=product_id, user=request.user)
+                Review.objects.create(rating=rating, message=msg, product_id=product_id, customer=request.user.customer)
             return redirect(request.POST.get("returnurl", "/"))
         raise Http404()
     return redirect("/")

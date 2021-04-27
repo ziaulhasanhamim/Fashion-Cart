@@ -190,4 +190,7 @@ def place_order(request: HttpRequest) -> JsonResponse:
             request.cart.date_ordered = datetime.datetime.now()
             request.cart.status = OrderStatusChoices.PENDING
             request.cart.save()
+            for item in request.cart.order_items.all():
+                item.product.sold += item.quantity
+                item.product.save()
             return JsonResponse("Order Updated", safe=False)
