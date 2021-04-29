@@ -54,6 +54,7 @@ def product_list(request: HttpRequest) -> JsonResponse:
         gender: str = request.GET.get("gender", None)
         max_price = float(request.GET.get("max", "9999999999.99"))
         min_price = float(request.GET.get("min", "0"))
+        order_by = request.GET.get("order_by", "-timestamp")
         skip = page * per_page
         product_query = []
         if rating != 0.0:
@@ -63,53 +64,53 @@ def product_list(request: HttpRequest) -> JsonResponse:
                     for_gender=gender,
                     price__gte=min_price,
                     price__lte=max_price,
-                    rating__gte=rating)
+                    rating__gte=rating).order_by(order_by)
 
             elif category != None:
                 product_query = Product.objects.annotate(rating=Avg("reviews__rating")).filter(
                     categories__name__iexact=category,
                     price__gte=min_price,
                     price__lte=max_price,
-                    rating__gte=rating)
+                    rating__gte=rating).order_by(order_by)
 
             elif gender != None:
                 product_query = Product.objects.annotate(rating=Avg("reviews__rating")).filter(
                     for_gender=gender,
-                    rice__gte=min_price,
+                    price__gte=min_price,
                     price__lte=max_price,
-                    rating__gte=rating)
+                    rating__gte=rating).order_by(order_by)
 
             else:
                 product_query = Product.objects.annotate(rating=Avg("reviews__rating")).filter(
                     price__gte=min_price,
                     price__lte=max_price,
                     rating__gte=rating
-                )
+                ).order_by(order_by)
         else:
             if category != None and gender != None:
-                product_query = Product.objects.filter(
+                product_query = Product.objects.annotate(rating=Avg("reviews__rating")).filter(
                     categories__name__iexact=category,
                     for_gender=gender,
                     price__gte=min_price,
-                    price__lte=max_price)
+                    price__lte=max_price).order_by(order_by)
 
             elif category != None:
-                product_query = Product.objects.filter(
+                product_query = Product.objects.annotate(rating=Avg("reviews__rating")).filter(
                     categories__name__iexact=category,
                     price__gte=min_price,
-                    price__lte=max_price)
+                    price__lte=max_price).order_by(order_by)
 
             elif gender != None:
-                product_query = Product.objects.filter(
+                product_query = Product.objects.annotate(rating=Avg("reviews__rating")).filter(
                     for_gender=gender,
-                    rice__gte=min_price,
-                    price__lte=max_price)
+                    price__gte=min_price,
+                    price__lte=max_price).order_by(order_by)
 
             else:
-                product_query = Product.objects.filter(
+                product_query = Product.objects.annotate(rating=Avg("reviews__rating")).filter(
                     price__gte=min_price,
                     price__lte=max_price
-                )
+                ).order_by(order_by)
 
         product_count = product_query.count()
         products_needs_to_render = product_query[skip:skip + per_page]
@@ -155,6 +156,7 @@ def shipping_charge(request: HttpRequest) -> JsonResponse:
             return JsonResponse(context)
         context["charge"] = 4
         return JsonResponse(context)
+
 
 @only_authorized
 def place_order(request: HttpRequest) -> JsonResponse:

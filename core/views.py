@@ -106,6 +106,7 @@ def update_reviews(request: HttpRequest) -> HttpResponse:
 def products(request: HttpRequest) -> HttpResponse:
     context: Dict[str, object] = dict()
     context["categories"] = Category.objects.all()
+    context["sort_order"] = request.GET.get("order_by", "-timestamp")
     return render(request, "core/products.html", context)
 
 
@@ -113,6 +114,7 @@ def category_products(request: HttpRequest, category: str) -> HttpResponse:
     context: Dict[str, object] = dict()
     context["category"] = category
     context["categories"] = Category.objects.all()
+    context["sort_order"] = request.GET.get("order_by", "-timestamp")
     return render(request, "core/products.html", context)
 
 
@@ -120,6 +122,7 @@ def gender_products(request: HttpRequest, gender: str) -> HttpResponse:
     context: Dict[str, object] = dict()
     context["gender"] = gender
     context["categories"] = Category.objects.all()
+    context["sort_order"] = request.GET.get("order_by", "-timestamp")
     return render(request, "core/products.html", context)
 
 
@@ -128,6 +131,7 @@ def category_gender_products(request: HttpRequest, category: str, gender: str) -
     context["category"] = category
     context["gender"] = gender
     context["categories"] = Category.objects.all()
+    context["sort_order"] = request.GET.get("order_by", "-timestamp")
     return render(request, "core/products.html", context)
 
 

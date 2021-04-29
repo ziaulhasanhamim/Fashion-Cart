@@ -10,12 +10,16 @@ var app = new Vue({
         category: cat,
         gender: gen,
         rating: 0,
-        allProductCount: 0
+        allProductCount: 0,
+        sort: sort_order
     },
     mounted() {
         this.fetchData()
     },
     methods: {
+        changeSortData() {
+            document.getElementById("sort-data").submit()
+        },
         max_changed() {
             if (this.max_price < 0) {
                 this.max_price = 0
@@ -29,25 +33,25 @@ var app = new Vue({
         changeCurrentPage(page) {
             this.currentPage = page;
             if (this.category) {
-                fetch(`/api/products?category=${this.category}&page=${page}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}`)
+                fetch(`/api/products?category=${this.category}&page=${page}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}&order_by=${this.sort}`)
                     .then(res => res.json())
                     .then(data => {
                         this.products = data["products"]
                     });
             } else if (this.gender) {
-                fetch(`/api/products?gender=${this.gender}&page=${page}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}`)
+                fetch(`/api/products?gender=${this.gender}&page=${page}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}&order_by=${this.sort}`)
                     .then(res => res.json())
                     .then(data => {
                         this.products = data["products"]
                     });
             } else if (this.gender && this.catagory) {
-                fetch(`/api/products?gender=${this.gender}&category=${this.category}&page=${page}&max=${this.max_price || 9999999999.99}&min=${this.min_price  || 0}&rating=${this.rating || 0}`)
+                fetch(`/api/products?gender=${this.gender}&category=${this.category}&page=${page}&max=${this.max_price || 9999999999.99}&min=${this.min_price  || 0}&rating=${this.rating || 0}&order_by=${this.sort}`)
                     .then(res => res.json())
                     .then(data => {
                         this.products = data["products"]
                     });
             } else {
-                fetch(`/api/products?page=${page}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}`)
+                fetch(`/api/products?page=${page}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}&order_by=${this.sort}`)
                     .then(res => res.json())
                     .then(data => {
                         this.products = data["products"];
@@ -59,7 +63,7 @@ var app = new Vue({
             this.products = []
             this.currentPage = 1
             if (this.category) {
-                fetch(`/api/products?category=${this.category}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}`)
+                fetch(`/api/products?category=${this.category}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}&order_by=${this.sort}`)
                     .then(res => res.json())
                     .then(data => {
                         this.products = data["products"]
@@ -69,7 +73,7 @@ var app = new Vue({
                         this.allProductCount = data["paging_info"].product_count
                     });
             } else if (this.gender) {
-                fetch(`/api/products?gender=${this.gender}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}`)
+                fetch(`/api/products?gender=${this.gender}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}&order_by=${this.sort}`)
                     .then(res => res.json())
                     .then(data => {
                         this.products = data["products"]
@@ -79,7 +83,7 @@ var app = new Vue({
                         this.allProductCount = data["paging_info"].product_count
                     });
             } else if (this.gender && this.catagory) {
-                fetch(`/api/products?gender=${this.gender}&category=${this.category}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}`)
+                fetch(`/api/products?gender=${this.gender}&category=${this.category}&max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}&order_by=${this.sort}`)
                     .then(res => res.json())
                     .then(data => {
                         this.products = data["products"]
@@ -89,7 +93,7 @@ var app = new Vue({
                         this.allProductCount = data["paging_info"].product_count
                     });
             } else {
-                fetch(`/api/products?max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}`)
+                fetch(`/api/products?max=${this.max_price || 9999999999.99}&min=${this.min_price || 0}&rating=${this.rating || 0}&order_by=${this.sort}`)
                     .then(res => res.json())
                     .then(data => {
                         this.products = data["products"]
