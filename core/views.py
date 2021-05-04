@@ -141,3 +141,17 @@ def checkout(request: HttpRequest) -> HttpResponse:
         return redirect("/")
     context: Dict[str, object] = dict()
     return render(request, "core/checkout.html", context)
+
+
+def about_us(request: HttpRequest) -> HttpResponse:
+    context: Dict[str, object] = dict()
+    return render(request, "core/about.html", context)
+
+def sell_on_fashion_cart(request: HttpRequest) -> HttpResponse:
+    context: Dict[str, object] = dict()
+    return render(request, "core/sell_on_fashion_cart.html", context)
+
+
+def contact(request: HttpRequest) -> HttpResponse:
+    context: Dict[str, object] = dict()
+    return render(request, "core/contact.html", context)

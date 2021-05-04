@@ -26,19 +26,19 @@
                     <!--====== List ======-->
                     <ul class="ah-list ah-list--design2 ah-list--link-color-white">
                         <li>
-
-                            <a href="{% url 'core:products' %}">Our Products</a></li>
-                        <li>
                             <a href="{% url 'core:products' %}?order_by=-timestamp">Latest Products</a>
                         </li>
                         <li>
-                            <a href="{% url 'core:products' %}?order_by=-timestamp">Best Rated Products</a>
+                            <a href="{% url 'core:products' %}?order_by=-rating">Best Rated Products</a>
                         </li>
                         <li>
-                            <a href="">About Us</a>
+                            <a href="{% url 'core:about' %}">About Us</a>
                         </li>
                         <li>
-                            <a href="">Contact</a>
+                            <a href="{% url 'core:contact' %}">Contact</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'core:sell-on-fashion-cart' %}">Sell On Fashion Cart</a>
                         </li>
                     </ul>
                     <!--====== End - List ======-->

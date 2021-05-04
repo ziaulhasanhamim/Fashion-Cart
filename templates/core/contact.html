@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="/static/images/favicon.png" rel="shortcut icon">
+    <title>Ludus - Electronics, Apparel, Computers, Books, DVDs & more</title>
+
+    <!--====== Google Font ======-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
+
+    <!--====== Vendor Css ======-->
+    <link rel="stylesheet" href="/static/css/vendor.css">
+
+    <!--====== Utility-Spacing ======-->
+    <link rel="stylesheet" href="/static/css/utility.css">
+
+    <!--====== App ======-->
+    <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body class="config">
+    <div class="preloader is-active">
+        <div class="preloader__wrap">
+
+            <img class="preloader__img" src="/static/images/preloader.png" alt=""></div>
+    </div>
+
+    <!--====== Main App ======-->
+    <div id="app">
+
+        <!--====== Main Header ======-->
+        <header class="header--style-1 header--box-shadow">
+
+            <!--====== Nav 1 ======-->
+            {% include 'components/primary-nav-2.html' %}
+            <!--====== End - Nav 1 ======-->
+
+
+            <!--====== Nav 2 ======-->
+            {% include 'components/secondary-nav-2.html' %}
+            <!--====== End - Nav 2 ======-->
+        </header>
+        <!--====== End - Main Header ======-->
+
+
+        <!--====== App Content ======-->
+        <div class="app-content">
+
+            <!--====== Section 1 ======-->
+            <div class="u-s-p-y-60">
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="breadcrumb">
+                            <div class="breadcrumb__wrap">
+                                <ul class="breadcrumb__list">
+                                    <li class="has-separator">
+
+                                        <a href="{% url 'core:index' %}">Home</a></li>
+                                    <li class="is-marked">
+
+                                        <a href="{% url 'core:contact' %}">Contact</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section 1 ======-->
+
+
+            <!--====== Section 2 ======-->
+            <div class="u-s-p-b-60">
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="g-map">
+                                    <div id="map"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 2 ======-->
+
+
+            <!--====== Section 3 ======-->
+            <div class="u-s-p-b-60">
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 u-s-m-b-30">
+                                <div class="contact-o u-h-100">
+                                    <div class="contact-o__wrap">
+                                        <div class="contact-o__icon"><i class="fas fa-phone-volume"></i></div>
+
+                                        <span class="contact-o__info-text-1">LET'S HAVE A CALL</span>
+
+                                        <span class="contact-o__info-text-2">+8801990129374</span>
+
+                                        <span class="contact-o__info-text-2">+8801992209149</span>
+                                        <span class="contact-o__info-text-2">Mail: fashioncartbd@gmail.com</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 u-s-m-b-30">
+                                <div class="contact-o u-h-100">
+                                    <div class="contact-o__wrap">
+                                        <div class="contact-o__icon"><i class="fas fa-map-marker-alt"></i></div>
+
+                                        <span class="contact-o__info-text-1">OUR LOCATION</span>
+
+                                        <span class="contact-o__info-text-2">Address: Barmashil Road, khulna</span>
+
+                                        <span class="contact-o__info-text-2">Office: Sikder & Sons</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 u-s-m-b-30">
+                                <div class="contact-o u-h-100">
+                                    <div class="contact-o__wrap">
+                                        <div class="contact-o__icon"><i class="far fa-clock"></i></div>
+
+                                        <span class="contact-o__info-text-1">Office WORK TIME</span>
+
+                                        <span class="contact-o__info-text-2">5 Days a Week</span>
+
+                                        <span class="contact-o__info-text-2">From 9 AM to 7 PM</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 3 ======-->
+
+
+            <!--====== Section 4 ======-->
+            <div class="u-s-p-b-60">
+
+                <!--====== Section Content ======-->
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 4 ======-->
+        </div>
+        <!--====== End - App Content ======-->
+
+
+        <!--====== Main Footer ======-->
+        {% include 'components/footer.html' %}
+    </div>
+    <!--====== End - Main App ======-->
+
+
+    <!--====== Google Analytics: change UA-XXXXX-Y to be your site's ID ======-->
+    <script>
+        window.ga = function() {
+            ga.q.push(arguments)
+        };
+        ga.q = [];
+        ga.l = +new Date;
+        ga('create', 'UA-XXXXX-Y', 'auto');
+        ga('send', 'pageview')
+    </script>
+    <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+
+    <!--====== Vendor Js ======-->
+    <script src="/static/js/vendor.js"></script>
+
+    <!--====== Google Map ======-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-MO9uPLS-ApTqYs0FpYdVG8cFwdq6apw"></script>
+
+    <!--====== Google Map Init ======-->
+    <script src="/static/js/map-init.js"></script>
+
+    <!--====== jQuery Shopnav plugin ======-->
+    <script src="/static/js/jquery.shopnav.js"></script>
+
+    <!--====== App ======-->
+    <script src="/static/js/app.js"></script>
+
+    <!--====== Noscript ======-->
+    <noscript>
+        <div class="app-setting">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="app-setting__wrap">
+                            <h1 class="app-setting__h1">JavaScript is disabled in your browser.</h1>
+
+                            <span class="app-setting__text">Please enable JavaScript in your browser or upgrade to a JavaScript-capable browser.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </noscript>
+</body>
+</html>
