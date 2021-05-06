@@ -5,7 +5,7 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from decorators.authorization import only_authorized
 import json
 import datetime
-from .models import Product, Category, Slider, Order, OrderItem, Review
+from .models import Product, Category, Slider, Order, OrderItem, Review, ExclusiveProduct
 
 
 def index(request: HttpRequest) -> HttpResponse :
@@ -14,9 +14,12 @@ def index(request: HttpRequest) -> HttpResponse :
         "latest_women_products": Product.objects.filter(for_gender="women").order_by("-timestamp").prefetch_related("categories")[:20],
         "best_sold_men_products": Product.objects.filter(for_gender="men").order_by("-sold").prefetch_related("categories")[:20],
         "best_sold_women_products": Product.objects.filter(for_gender="women").order_by("-sold").prefetch_related("categories")[:20],
+        "best_rating_men_products": Product.objects.filter(for_gender="men").annotate(rating=Avg("reviews__rating")).order_by("-rating").prefetch_related("categories")[:20],
+        "best_rating_women_products": Product.objects.filter(for_gender="women").annotate(rating=Avg("reviews__rating")).order_by("-rating").prefetch_related("categories")[:20],
         "men_categories": Category.objects.filter(featured_in="men").exclude(image='').order_by("?")[:4],
         "women_categories": Category.objects.filter(featured_in="women").exclude(image='').order_by("?")[:4],
         "sliders": Slider.objects.filter(enabled=True),
+        "exclusive_products": ExclusiveProduct.objects.filter(available_till__gt=datetime.datetime.now()).order_by("available_till")[0:4]
     }
     return render(request, "core/index.html", context)
 
