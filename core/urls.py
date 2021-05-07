@@ -16,5 +16,6 @@ urlpatterns = [
     path("checkout", views.checkout, name="checkout"),
     path("about-us", views.about_us, name="about"),
     path("sell-on-our-platfom", views.sell_on_fashion_cart, name="sell-on-fashion-cart"),
-    path("contact", views.contact, name="contact")
+    path("contact", views.contact, name="contact"),
+    path("test", views.test, name="test")
 ]

@@ -5,6 +5,9 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from decorators.authorization import only_authorized
 import json
 import datetime
+import time
+from django.core.mail import send_mail
+from django.conf import settings
 from .models import Product, Category, Slider, Order, OrderItem, Review, ExclusiveProduct
 
 
@@ -25,11 +28,7 @@ def index(request: HttpRequest) -> HttpResponse :
 
 
 def test(request):
-    try:
-        print(datetime.datetime.strptime(request.POST["date"], '%Y-%m-%d, %H:%M:%S'))
-    except ValueError:
-        print(datetime.datetime.strptime(request.POST["date"], '%Y-%m-%d'))
-    return render(request, "core/test.html", {})
+    return HttpResponse("Hello")
 
 
 @only_authorized

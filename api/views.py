@@ -2,10 +2,15 @@ from django.http import JsonResponse, HttpRequest, Http404, HttpResponseForbidde
 from decorators.authorization import only_authorized
 from core.models import Product, ShippingAndBilling, PaymentOptionChoies, OrderStatusChoices
 from django.db.models import Avg
-from typing import Dict
+from typing import Dict, List
 import math
 import json
 import datetime
+from django.core.mail import send_mass_mail, send_mail
+from django.conf import settings
+from django.utils.html import strip_tags
+from django.template.loader import render_to_string
+import threading
 
 
 @only_authorized
@@ -158,6 +163,15 @@ def shipping_charge(request: HttpRequest) -> JsonResponse:
         return JsonResponse(context)
 
 
+class PlaceOrderResponse(JsonResponse):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    
+    def close(self):
+        super().close()
+        cleanup_place_order(self.http)
+
+
 @only_authorized
 def place_order(request: HttpRequest) -> JsonResponse:
     if request.method == "POST":
@@ -192,7 +206,22 @@ def place_order(request: HttpRequest) -> JsonResponse:
             request.cart.date_ordered = datetime.datetime.now()
             request.cart.status = OrderStatusChoices.PENDING
             request.cart.save()
-            for item in request.cart.order_items.all():
-                item.product.sold += item.quantity
-                item.product.save()
-            return JsonResponse("Order Updated", safe=False)
+            res = PlaceOrderResponse("Updated", safe=False)
+            res.http = request
+            return res
+
+
+def cleanup_place_order(request: HttpRequest):
+    for item in request.cart.order_items.all():
+        item.product.sold += item.quantity
+        item.product.save()
+    send_new_order_email(["ziaulhasan174@gmail.com"], f"{request._get_scheme()}://{request.get_host()}/admin/orders/manage/{request.cart.id}")
+
+
+def send_new_order_email(to_emails: List[str], url: str):
+    from_email = settings.EMAIL_HOST_USER
+    subject = "New Order Received"
+    for to_email in to_emails: 
+        html_message = render_to_string('core/order_email.html', {"email": to_email, "url": url})
+        plain_message = strip_tags(html_message)
+        send_mail(subject, plain_message, from_email, [to_email], fail_silently=False, html_message=html_message)
