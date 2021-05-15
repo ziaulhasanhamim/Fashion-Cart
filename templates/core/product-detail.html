@@ -63,19 +63,15 @@
                                 <ul class="pd-breadcrumb__list">
                                     <li class="has-separator">
 
-                                        <a href="index.hml">Home</a>
+                                        <a href="{% url 'core:index' %}">Home</a>
                                     </li>
                                     <li class="has-separator">
 
-                                        <a href="shop-side-version-2.html">Electronics</a>
+                                        <a href="{% url 'core:products' %}">Products</a>
                                     </li>
                                     <li class="has-separator">
 
-                                        <a href="shop-side-version-2.html">DSLR Cameras</a>
-                                    </li>
-                                    <li class="is-marked">
-
-                                        <a href="shop-side-version-2.html">Nikon Cameras</a>
+                                        <a href="{% url 'core:product-detail' product.url %}">{{ product.title }}</a>
                                     </li>
                                 </ul>
                             </div>
@@ -135,13 +131,13 @@
                                     <div class="pd-detail__inline">
 
                                         {% if product.discount_price %}
-                                        <span class="pd-detail__price">${{ product.discount_price }}</span>
+                                        <span class="pd-detail__price">৳ {{ product.discount_price }}</span>
 
                                         <span class="pd-detail__discount">({{ product.get_discount_percent }}%
-                                            OFF)</span><del class="pd-detail__del">${{ product.price }}</del>
+                                            OFF)</span><del class="pd-detail__del">৳ {{ product.price }}</del>
                                     </div>
                                     {% else %}
-                                    <span class="pd-detail__price">${{ product.price }}</span>
+                                    <span class="pd-detail__price">৳ {{ product.price }}</span>
                                     {% endif %}
                                 </div>
                                 <div class="u-s-m-b-15">
@@ -188,7 +184,7 @@
 
                                         <span class="pd-detail__click-wrap"><i class="far fa-heart u-s-m-r-6"></i>
 
-                                            <a href="signin.html">Add to Wishlist</a>
+                                            <a href="">Add to Wishlist</a>
 
                                             <span class="pd-detail__click-count">(222)</span></span>
                                     </div>
@@ -198,11 +194,13 @@
 
                                         <span class="pd-detail__click-wrap"><i class="far fa-envelope u-s-m-r-6"></i>
 
-                                            <a href="signin.html">Email me When the price drops</a>
+                                            <a href="">Email me When the price drops</a>
 
                                             <span class="pd-detail__click-count">(20)</span></span>
                                     </div>
                                 </div>
+                                
+                                {% comment %}    
                                 <div class="u-s-m-b-15">
                                     <ul class="pd-social-list">
                                         <li>
@@ -229,6 +227,8 @@
                                         </li>
                                     </ul>
                                 </div>
+                                {% endcomment %}
+                                    
                                 <div class="u-s-m-b-15">
                                     <form class="pd-detail__form" method="POST" action="{% url 'core:cart' %}">
                                         <div class="pd-detail-inline-2">
@@ -288,17 +288,20 @@
                             <div class="pd-tab">
                                 <div class="u-s-m-b-30">
                                     <ul class="nav pd-tab__list">
+                                        
+
                                         <li class="nav-item">
 
                                             <a class="nav-link active" data-toggle="tab" href="#pd-desc">DESCRIPTION</a>
                                         </li>
+                                            
 
                                         {% comment %}
                                         <li class="nav-item">
                                             <a class="nav-link" data-toggle="tab" href="#pd-tag">TAGS</a>
                                         </li>
                                         {% endcomment %}
-
+                                        
                                         <li class="nav-item">
 
                                             <a class="nav-link" id="view-review" data-toggle="tab"
@@ -306,19 +309,22 @@
 
                                                 <span>({{ product.reviews.count }})</span></a>
                                         </li>
+                                            
                                     </ul>
                                 </div>
                                 <div class="tab-content">
 
                                     <!--====== Tab 1 ======-->
 
-                                    {% if product.description %}
                                     <div class="tab-pane fade show active" id="pd-desc">
                                         <div class="pd-tab__desc">
-                                            {{ product.description|safe }}
+                                            
+                                            {% if product.description %}
+                                            {{ product.description }}
+                                            {% endif %}
+                                                
                                         </div>
                                     </div>
-                                    {% endif %}
 
                                     <!--====== End - Tab 1 ======-->
 
@@ -919,7 +925,7 @@
                                                 <form class="pd-tab__rev-f1">
                                                     <div class="rev-f1__group">
                                                         <div class="u-s-m-b-15">
-                                                            <h2>{{ reviews.count }} Review(s) for {{ product.title }}
+                                                            <h2>{{ product.reviews.count }} Review(s) for {{ product.title }}
                                                             </h2>
                                                         </div>
 
@@ -970,6 +976,8 @@
                 </div>
             </div>
             <!--====== End - Product Detail Tab ======-->
+            
+            {% comment %}
             <div class="u-s-p-b-90">
 
                 <!--====== Section Intro ======-->
@@ -1048,9 +1056,9 @@
                                             <span class="product-o__review">(20)</span>
                                         </div>
 
-                                        <span class="product-o__price">$125.00
+                                        <span class="product-o__price">৳ 125.00
 
-                                            <span class="product-o__discount">$160.00</span></span>
+                                            <span class="product-o__discount">৳ 160.00</span></span>
                                     </div>
                                 </div>
                                 <div class="u-s-m-b-30">
@@ -1078,13 +1086,13 @@
                                                     </li>
                                                     <li>
 
-                                                        <a href="signin.html" data-tooltip="tooltip"
+                                                        <a href="" data-tooltip="tooltip"
                                                             data-placement="top" title="Add to Wishlist"><i
                                                                 class="fas fa-heart"></i></a>
                                                     </li>
                                                     <li>
 
-                                                        <a href="signin.html" data-tooltip="tooltip"
+                                                        <a href="" data-tooltip="tooltip"
                                                             data-placement="top"
                                                             title="Email me When the price drops"><i
                                                                 class="fas fa-envelope"></i></a>
@@ -1107,9 +1115,9 @@
                                             <span class="product-o__review">(20)</span>
                                         </div>
 
-                                        <span class="product-o__price">$125.00
+                                        <span class="product-o__price">৳ 125.00
 
-                                            <span class="product-o__discount">$160.00</span></span>
+                                            <span class="product-o__discount">৳ 160.00</span></span>
                                     </div>
                                 </div>
                                 <div class="u-s-m-b-30">
@@ -1166,9 +1174,9 @@
                                             <span class="product-o__review">(20)</span>
                                         </div>
 
-                                        <span class="product-o__price">$125.00
+                                        <span class="product-o__price">৳ 125.00
 
-                                            <span class="product-o__discount">$160.00</span></span>
+                                            <span class="product-o__discount">৳ 160.00</span></span>
                                     </div>
                                 </div>
                                 <div class="u-s-m-b-30">
@@ -1225,9 +1233,9 @@
                                             <span class="product-o__review">(20)</span>
                                         </div>
 
-                                        <span class="product-o__price">$125.00
+                                        <span class="product-o__price">৳ 125.00
 
-                                            <span class="product-o__discount">$160.00</span></span>
+                                            <span class="product-o__discount">৳ 160.00</span></span>
                                     </div>
                                 </div>
                                 <div class="u-s-m-b-30">
@@ -1284,9 +1292,9 @@
                                             <span class="product-o__review">(20)</span>
                                         </div>
 
-                                        <span class="product-o__price">$125.00
+                                        <span class="product-o__price">৳ 125.00
 
-                                            <span class="product-o__discount">$160.00</span></span>
+                                            <span class="product-o__discount">৳ 160.00</span></span>
                                     </div>
                                 </div>
                                 <div class="u-s-m-b-30">
@@ -1343,9 +1351,9 @@
                                             <span class="product-o__review">(20)</span>
                                         </div>
 
-                                        <span class="product-o__price">$125.00
+                                        <span class="product-o__price">৳ 125.00
 
-                                            <span class="product-o__discount">$160.00</span></span>
+                                            <span class="product-o__discount">৳ 160.00</span></span>
                                     </div>
                                 </div>
                             </div>
@@ -1354,6 +1362,8 @@
                 </div>
                 <!--====== End - Section Content ======-->
             </div>
+            {% endcomment %}
+                
             <!--====== End - Section 1 ======-->
         </div>
         <!--====== End - App Content ======-->
@@ -1475,10 +1485,10 @@
                                         <div>
                                             <div class="pd-detail__inline">
 
-                                                <span class="pd-detail__price">$6.99</span>
+                                                <span class="pd-detail__price">৳ 6.99</span>
 
                                                 <span class="pd-detail__discount">(76% OFF)</span><del
-                                                    class="pd-detail__del">$28.97</del>
+                                                    class="pd-detail__del">৳ 28.97</del>
                                             </div>
                                         </div>
                                         <div class="u-s-m-b-15">
@@ -1641,7 +1651,7 @@
 
                                         <span class="success__quantity">Quantity: 1</span>
 
-                                        <span class="success__price">$170.00</span>
+                                        <span class="success__price">৳ 170.00</span>
                                     </div>
                                 </div>
                             </div>

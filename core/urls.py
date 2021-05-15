@@ -11,7 +11,6 @@ urlpatterns = [
     path("products", views.products, name="products"),
     path("products/category/<category>", views.category_products, name="products-category"),
     path("products/gender/<gender>", views.gender_products, name="products-gender"),
-    path("products/gender/<gender>", views.gender_products, name="products-gender"),
     path("products/category/<category>/gender/<gender>", views.category_gender_products, name="products-category-gender"),
     path("checkout", views.checkout, name="checkout"),
     path("about-us", views.about_us, name="about"),

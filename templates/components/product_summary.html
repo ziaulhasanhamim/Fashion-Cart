@@ -19,12 +19,12 @@
                     </li>
                     <li>
 
-                        <a href="signin.html" data-tooltip="tooltip" data-placement="top" title="Add to Wishlist"><i
+                        <a href="" data-tooltip="tooltip" data-placement="top" title="Add to Wishlist"><i
                                 class="fas fa-heart"></i></a>
                     </li>
                     <li>
 
-                        <a href="signin.html" data-tooltip="tooltip" data-placement="top"
+                        <a href="" data-tooltip="tooltip" data-placement="top"
                             title="Email me When the price drops"><i class="fas fa-envelope"></i></a>
                     </li>
                 </ul>
@@ -36,9 +36,9 @@
             {% for category in product.categories.all %}
             
             {% if forloop.counter0 != 0 %}
-            <a href="shop-side-version-2.html" style="margin-left: 10px;">{{ category }}</a>
+            <a href="{% url 'core:products-category' category %}" style="margin-left: 10px;">{{ category }}</a>
             {% else %}
-            <a href="shop-side-version-2.html">{{ category }}</a>
+            <a href="{% url 'core:products-category' category %}">{{ category }}</a>
             {% endif %}
                 
             {% endfor %}
@@ -55,11 +55,11 @@
         </div>
 
         {% if product.discount_price != None %}
-        <span class="product-o__price">${{ product.discount_price }}
-            <span class="product-o__discount">${{ product.price }}</span>
+        <span class="product-o__price">৳ {{ product.discount_price }}
+            <span class="product-o__discount">৳ {{ product.price }}</span>
         </span>
         {% else %}
-        <span class="product-o__price">${{ product.price }}</span>
+        <span class="product-o__price">৳ {{ product.price }}</span>
         {% endif %}
 
     </div>

@@ -114,11 +114,11 @@
 
                                                 <span class="mini-product__name">
 
-                                                    <a href="product-detail.html">{{ item.product.title }}</a></span>
+                                                    <a href="{% url 'core:product-detail' item.product.url %}">{{ item.product.title }}</a></span>
 
                                                 <span class="mini-product__quantity">{{ item.quantity }} x</span>
 
-                                                <span class="mini-product__price">${{ item.product.get_price }}</span>
+                                                <span class="mini-product__price">৳ {{ item.product.get_price }}</span>
                                             </div>
                                         </div>
 
@@ -141,10 +141,10 @@
                                     </div>
                                     <div class="mini-action">
 
-                                        <a class="mini-link btn--e-brand-b-2" href="checkout.html">PROCEED TO
+                                        <a class="mini-link btn--e-brand-b-2" href="{% url 'core:checkout' %}">PROCEED TO
                                             CHECKOUT</a>
 
-                                        <a class="mini-link btn--e-transparent-secondary-b-2" href="cart.html">VIEW
+                                        <a class="mini-link btn--e-transparent-secondary-b-2" href="{% url 'core:cart' %}?returnurl={{ request.path }}">VIEW
                                             CART</a>
                                     </div>
                                 </div>

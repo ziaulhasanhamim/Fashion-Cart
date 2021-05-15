@@ -6,6 +6,7 @@ from typing import Dict, List
 import math
 import json
 import datetime
+import time
 from django.core.mail import send_mass_mail, send_mail
 from django.conf import settings
 from django.utils.html import strip_tags
@@ -160,16 +161,7 @@ def shipping_charge(request: HttpRequest) -> JsonResponse:
             context["charge"] = 0
             return JsonResponse(context)
         context["charge"] = 4
-        return JsonResponse(context)
-
-
-class PlaceOrderResponse(JsonResponse):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-    
-    def close(self):
-        super().close()
-        cleanup_place_order(self.http)
+        return JsonResponse(context)        
 
 
 @only_authorized
@@ -206,9 +198,10 @@ def place_order(request: HttpRequest) -> JsonResponse:
             request.cart.date_ordered = datetime.datetime.now()
             request.cart.status = OrderStatusChoices.PENDING
             request.cart.save()
-            res = PlaceOrderResponse("Updated", safe=False)
-            res.http = request
-            return res
+            t1 = threading.Thread(target=cleanup_place_order, args=[request])
+            t1.daemon = True
+            t1.start()
+            return JsonResponse("Updated", safe=False)
 
 
 def cleanup_place_order(request: HttpRequest):
