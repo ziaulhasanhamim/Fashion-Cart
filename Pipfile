@@ -11,6 +11,8 @@ django-cloudinary-storage = "==0.3.0"
 whitenoise = "==5.2.0"
 pillow = "==8.2.0"
 gunicorn = "*"
+dj-database-url = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 

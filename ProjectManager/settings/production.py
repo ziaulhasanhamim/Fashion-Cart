@@ -1,6 +1,7 @@
 from .base import *
 import cloudinary
 import cloudinary_storage
+import dj_database_url
 
 DEBUG = False
 SECRET_KEY = 'ijng1yfdsfsdfsdfsdfln(gqx15qpjusofga-ww82ds4$jdmnh7uo4&5w&fva7!'
@@ -31,10 +32,7 @@ MIDDLEWARE = [
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'production_db.sqlite3',
-    }
+    'default': dj_database_url.config(conn_max_age=600)
 }
 
 
