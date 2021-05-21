@@ -3,6 +3,7 @@ import cloudinary
 import cloudinary_storage
 
 DEBUG = False
+SECRET_KEY = 'ijng1yfdsfsdfsdfsdfln(gqx15qpjusofga-ww82ds4$jdmnh7uo4&5w&fva7!'
 
 INSTALLED_APPS += [
     'cloudinary',

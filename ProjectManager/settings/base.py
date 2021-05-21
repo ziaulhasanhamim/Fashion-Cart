@@ -5,8 +5,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 ALLOWED_HOSTS = ["*"]
 
-SECRET_KEY = 'ijng1yfdsfsdfsdfsdfln(gqx15qpjusofga-ww82ds4$jdmnh7uo4&5w&fva7!'
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
