@@ -53,7 +53,7 @@ def cart(request: HttpRequest) -> JsonResponse:
 
 def product_list(request: HttpRequest) -> JsonResponse:
     if request.method == "GET":
-        per_page = 1
+        per_page = 20
         page = int(request.GET.get("page", "1")) - 1
         rating = float(request.GET.get("rating", "0.0"))
         category: str = request.GET.get("category", None)

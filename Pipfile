@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+cloudinary = "==1.25.0"
+django = "==3.1"
+django-ckeditor = "==6.0.0"
+django-cloudinary-storage = "==0.3.0"
+whitenoise = "==5.2.0"
+pillow = "==8.2.0"
+gunicorn = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
