@@ -1,4 +1,3 @@
-from ProjectManager.settings import *
 from .base import *
 
 DEBUG = True
