@@ -158,10 +158,10 @@ def shipping_charge(request: HttpRequest) -> JsonResponse:
         body = json.loads(request.body)
         state: str = body.get("state", None)
         city: str = body.get("city", None)
-        if state.lower() == "khulna" and city.lower() == "khulna":
-            context["charge"] = 0
+        if state.lower() == "dhaka" and city.lower() == "dhaka":
+            context["charge"] = 100
             return JsonResponse(context)
-        context["charge"] = 4
+        context["charge"] = 150
         return JsonResponse(context)        
 
 
