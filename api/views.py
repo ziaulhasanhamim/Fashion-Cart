@@ -1,3 +1,4 @@
+from core.models.new_order_subscriber import NewOrderSubscriber
 from django.http import JsonResponse, HttpRequest, Http404, HttpResponseForbidden
 from decorators.authorization import only_authorized
 from core.models import Product, ShippingAndBilling, PaymentOptionChoies, OrderStatusChoices
@@ -208,13 +209,13 @@ def cleanup_place_order(request: HttpRequest):
     for item in request.cart.order_items.all():
         item.product.sold += item.quantity
         item.product.save()
-    send_new_order_email(["ziaulhasan174@gmail.com"], f"{request._get_scheme()}://{request.get_host()}/admin/orders/manage/{request.cart.id}")
+    send_new_order_email(f"{request._get_scheme()}://{request.get_host()}/admin/orders/manage/{request.cart.id}")
 
 
-def send_new_order_email(to_emails: List[str], url: str):
+def send_new_order_email(url: str):
     from_email = settings.EMAIL_HOST_USER
     subject = "New Order Received"
-    for to_email in to_emails: 
-        html_message = render_to_string('core/order_email.html', {"email": to_email, "url": url})
+    for subscriber in NewOrderSubscriber.objects.all(): 
+        html_message = render_to_string('core/order_email.html', {"name": subscriber.name, "url": url})
         plain_message = strip_tags(html_message)
-        send_mail(subject, plain_message, from_email, [to_email], fail_silently=False, html_message=html_message)
+        send_mail(subject, plain_message, from_email, [subscriber.email], fail_silently=False, html_message=html_message)
