@@ -16,24 +16,16 @@ def signup(request: HttpRequest) -> HttpResponse:
         uname: str = request.POST.get("uname")
         password: str = request.POST.get("pass")
         conf_pass: str = request.POST.get("conf_pass")
-        is_uname_valid = False
-
-        if uname != None and uname.isalnum():
-            is_uname_valid = True
-        elif uname != None:
-            is_uname_valid = True
-            for char in uname:
-                if char not in "-_" or not char.isalnum():
-                    is_uname_valid = False
-                    break;
         
         if password == None or password.__len__() < 8:
             context["pass_error"] = "Password must be atleast 8 chars long"
         elif password != conf_pass:
             context["conf_pass_error"] = "Password Doesnt match wth confirm password"
-        elif not is_uname_valid:
-            context["uname_error"] = "Username Contains invalid characters"
-        elif email == None or User.objects.filter(email__iexact=email).exists():
+        elif uname == None:
+            context["uname_error"] = "Username is required"
+        elif email == None:
+            context["email_error"] = "Email is required"
+        elif User.objects.filter(email__iexact=email).exists():
             context["email_error"] = "Email Already Exists"
         elif User.objects.filter(username__iexact=uname).exists():
             context["uname_error"] = "Username Already Exists"
