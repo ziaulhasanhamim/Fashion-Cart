@@ -318,11 +318,9 @@
 
                                     <div class="tab-pane fade show active" id="pd-desc">
                                         <div class="pd-tab__desc">
-                                            
                                             {% if product.description %}
-                                            {{ product.description }}
+                                            {{ product.description|safe }}
                                             {% endif %}
-                                                
                                         </div>
                                     </div>
 
